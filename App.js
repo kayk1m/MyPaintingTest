@@ -5,7 +5,10 @@
   ALL COPYRIGHTS kimjh@bawi.org
  */
 
-import React from 'react';
+import 'react-native-gesture-handler';
+import * as React from 'react';
+import { NavigationContainer } from '@react-navigation/native';
+
 import {
   SafeAreaView,
   StyleSheet,
@@ -16,12 +19,12 @@ import {
 
 const App = () => {
   return (
-    <>
+    <NavigationContainer>
       <StatusBar barStyle='dark-content' backgroundColor='lavender'/>
       <SafeAreaView style={styles.container}>
         <Text style={styles.textHelloWorld}>Hello World!</Text>
       </SafeAreaView>
-    </>
+    </NavigationContainer>
   );
 };
 
