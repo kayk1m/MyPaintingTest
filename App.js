@@ -8,6 +8,11 @@
 import 'react-native-gesture-handler';
 import * as React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+
+import Icon from 'react-native-vector-icons/FontAwesome';
+
+const Tab = createBottomTabNavigator();
 
 import {
   SafeAreaView,
@@ -17,16 +22,45 @@ import {
   StatusBar,
 } from 'react-native';
 
-const App = () => {
+const Navigator = () => {
   return (
     <NavigationContainer>
-      <StatusBar barStyle='dark-content' backgroundColor='lavender'/>
-      <SafeAreaView style={styles.container}>
+      <Tab.Navigator>
+        <Tab.Screen
+          name="Home"
+          component={HomeScreen}
+          options={{
+            tabBarLabel: 'Home',
+            tabBarIcon: ({ color, size }) => <Icon name="home" size={size} color={color} />,
+          }}
+        />
+        <Tab.Screen name="Detail" component={DetailScreen} />
+      </Tab.Navigator>
+    </NavigationContainer>
+  )
+}
+
+const HomeScreen = () => {
+  return (
+    <View style={styles.container}>
+      <StatusBar barStyle='dark-content' backgroundColor='lavender' />
+      <SafeAreaView>
         <Text style={styles.textHelloWorld}>Hello World!</Text>
       </SafeAreaView>
-    </NavigationContainer>
-  );
-};
+    </View>
+  )
+}
+
+const DetailScreen = () => {
+  return (
+    <View style={styles.container}>
+      <StatusBar barStyle='dark-content' backgroundColor='lavender' />
+      <SafeAreaView>
+        <Text style={styles.textHelloWorld}>Detailed Page!</Text>
+      </SafeAreaView>
+    </View>
+  )
+}
 
 const styles = StyleSheet.create({
   container: {
@@ -39,6 +73,6 @@ const styles = StyleSheet.create({
   textHelloWorld: {
     fontSize: 30
   }
-});
+})
 
-export default App;
+export default Navigator;
