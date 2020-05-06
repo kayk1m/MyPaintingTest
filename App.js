@@ -12,8 +12,6 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 
 import Icon from 'react-native-vector-icons/FontAwesome';
 
-const Tab = createBottomTabNavigator();
-
 import {
   SafeAreaView,
   StyleSheet,
@@ -21,6 +19,9 @@ import {
   Text,
   StatusBar,
 } from 'react-native';
+
+
+const Tab = createBottomTabNavigator();
 
 const Navigator = () => {
   return (
