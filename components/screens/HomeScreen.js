@@ -8,12 +8,16 @@ import {
   StatusBar,
 } from 'react-native';
 
-const HomeScreen = () => {
+import ProductImage from '../ProductImage'
+
+const HomeScreen = ({ navigation }) => {
   return (
     <View style={styles.container}>
       <StatusBar barStyle='dark-content' backgroundColor='lavender' />
       <SafeAreaView>
-        <Text style={styles.textHelloWorld}>Hello World!</Text>
+        <ProductImage id={'This is ID'} onPress={() => {
+          navigation.navigate('MyPage')
+        }}/>
       </SafeAreaView>
     </View>
   )
