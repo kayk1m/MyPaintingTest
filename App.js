@@ -18,9 +18,19 @@ import PaletteScreen from './components/screens/PaletteScreen'
 import UploadScreen from './components/screens/UploadScreen'
 import InboxScreen from './components/screens/InboxScreen'
 import MyPageScreen from './components/screens/MyPageScreen'
+import PostListScreen from './components/screens/PostListScreen'
 
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
+
+const MyPageStack = () => {
+  return (
+    <Stack.Navigator>
+      <Stack.Screen name='MyPage' component={MyPageScreen} />
+      <Stack.Screen name='PostList' component={PostListScreen} options={({ route }) => ({ title: route.params.id })}/>
+    </Stack.Navigator>
+  )
+}
 
 const MainTabNavigator = () => {
   return (
@@ -56,7 +66,7 @@ const MainTabNavigator = () => {
         />
         <Tab.Screen
           name='MyPage'
-          component={MyPageScreen}
+          component={MyPageStack}
           options={{
             tabBarIcon: ({ color, size }) => <Icon name='face' size={size} color={color} />
           }}

@@ -6,21 +6,14 @@ import {
   View,
   Text,
   StatusBar,
-  Button
 } from 'react-native';
 
-const MyPageScreen = ({ navigation }) => {
+const PostListScreen = () => {
   return (
     <View style={styles.container}>
       <StatusBar barStyle='dark-content' backgroundColor='lavender' />
       <SafeAreaView>
-        <Text style={styles.textHelloWorld}>My Page!</Text>
-        <Button
-          title='Go to PostListScreen'
-          onPress={() => {
-            navigation.navigate('PostList', { id: 'My ID is here.' })
-          }}
-        />
+        <Text style={styles.textHelloWorld}>Post List Page!</Text>
       </SafeAreaView>
     </View>
   )
@@ -39,4 +32,4 @@ const styles = StyleSheet.create({
   }
 })
 
-export default MyPageScreen;
+export default PostListScreen;
