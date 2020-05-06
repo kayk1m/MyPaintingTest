@@ -20,6 +20,11 @@ import {
   StatusBar,
 } from 'react-native';
 
+import HomeScreen from './components/screens/HomeScreen'
+import PaletteScreen from './components/screens/PaletteScreen'
+import UploadScreen from './components/screens/UploadScreen'
+import InboxScreen from './components/screens/InboxScreen'
+import MyPageScreen from './components/screens/MyPageScreen'
 
 const Tab = createBottomTabNavigator();
 
@@ -35,31 +40,12 @@ const Navigator = () => {
             tabBarIcon: ({ color, size }) => <Icon name="home" size={size} color={color} />,
           }}
         />
-        <Tab.Screen name="Detail" component={DetailScreen} />
+        <Tab.Screen name="Palette" component={PaletteScreen} />
+        <Tab.Screen name="Upload" component={UploadScreen} />
+        <Tab.Screen name="Inbox" component={InboxScreen} />
+        <Tab.Screen name="MyPage" component={MyPageScreen} />
       </Tab.Navigator>
     </NavigationContainer>
-  )
-}
-
-const HomeScreen = () => {
-  return (
-    <View style={styles.container}>
-      <StatusBar barStyle='dark-content' backgroundColor='lavender' />
-      <SafeAreaView>
-        <Text style={styles.textHelloWorld}>Hello World!</Text>
-      </SafeAreaView>
-    </View>
-  )
-}
-
-const DetailScreen = () => {
-  return (
-    <View style={styles.container}>
-      <StatusBar barStyle='dark-content' backgroundColor='lavender' />
-      <SafeAreaView>
-        <Text style={styles.textHelloWorld}>Detailed Page!</Text>
-      </SafeAreaView>
-    </View>
   )
 }
 
