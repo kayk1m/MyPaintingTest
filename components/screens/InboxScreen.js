@@ -8,7 +8,7 @@ import {
   StatusBar,
 } from 'react-native';
 
-const InboxScreen = () => {
+const InboxScreen = ({ navigation }) => {
   return (
     <View style={styles.container}>
       <StatusBar barStyle='dark-content' backgroundColor='lavender' />

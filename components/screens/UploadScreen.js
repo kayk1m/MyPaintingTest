@@ -8,7 +8,7 @@ import {
   StatusBar,
 } from 'react-native';
 
-const UploadScreen = () => {
+const UploadScreen = ({ navigation }) => {
   return (
     <View style={styles.container}>
       <StatusBar barStyle='dark-content' backgroundColor='lavender' />

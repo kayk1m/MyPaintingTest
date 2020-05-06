@@ -8,7 +8,7 @@ import {
   StatusBar,
 } from 'react-native';
 
-const MyPageScreen = () => {
+const MyPageScreen = ({ nvigation }) => {
   return (
     <View style={styles.container}>
       <StatusBar barStyle='dark-content' backgroundColor='lavender' />
