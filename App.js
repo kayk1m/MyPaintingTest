@@ -10,15 +10,7 @@ import * as React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 
-import Icon from 'react-native-vector-icons/FontAwesome';
-
-import {
-  SafeAreaView,
-  StyleSheet,
-  View,
-  Text,
-  StatusBar,
-} from 'react-native';
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
 import HomeScreen from './components/screens/HomeScreen'
 import PaletteScreen from './components/screens/PaletteScreen'
@@ -33,33 +25,48 @@ const Navigator = () => {
     <NavigationContainer>
       <Tab.Navigator>
         <Tab.Screen
-          name="Home"
+          name='Home'
           component={HomeScreen}
           options={{
             tabBarLabel: 'Home',
-            tabBarIcon: ({ color, size }) => <Icon name="home" size={size} color={color} />,
+            tabBarIcon: ({ color, size }) => <Icon name='home' size={size} color={color} />,
           }}
         />
-        <Tab.Screen name="Palette" component={PaletteScreen} />
-        <Tab.Screen name="Upload" component={UploadScreen} />
-        <Tab.Screen name="Inbox" component={InboxScreen} />
-        <Tab.Screen name="MyPage" component={MyPageScreen} />
+        <Tab.Screen
+          name='Palette'
+          component={PaletteScreen}
+          options={{
+            tabBarLabel: 'Palette',
+            tabBarIcon: ({ color, size }) => <Icon name='palette' size={size} color={color} />
+          }}
+        />
+        <Tab.Screen
+          name='Upload'
+          component={UploadScreen}
+          options={{
+            tabBarLabel: 'Upload',
+            tabBarIcon: ({ color, size }) => <Icon name='plus' size={size} color={color} />
+          }}
+        />
+        <Tab.Screen
+          name='Inbox'
+          component={InboxScreen}
+          options={{
+            tabBarLabel: 'Inbox',
+            tabBarIcon: ({ color, size }) => <Icon name='email' size={size} color={color} />
+          }}
+        />
+        <Tab.Screen
+          name='MyPage'
+          component={MyPageScreen}
+          options={{
+            tabBarLabel: 'MyPage',
+            tabBarIcon: ({ color, size }) => <Icon name='face' size={size} color={color} />
+          }}
+        />
       </Tab.Navigator>
     </NavigationContainer>
   )
 }
-
-const styles = StyleSheet.create({
-  container: {
-    paddingTop: 20,
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: 'lavender',
-  },
-  textHelloWorld: {
-    fontSize: 30
-  }
-})
 
 export default Navigator;
