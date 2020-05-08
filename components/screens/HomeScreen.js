@@ -15,7 +15,7 @@ const HomeScreen = ({ navigation }) => {
     <View style={styles.container}>
       <StatusBar barStyle='dark-content' backgroundColor='lavender' />
       <SafeAreaView>
-        <ProductImage id={'This is ID'} onPress={() => {
+        <ProductImage id={'This is ID'} style={styles.item} price={300000} onPress={() => {
           navigation.navigate('MyPage')
         }}/>
       </SafeAreaView>
@@ -33,6 +33,9 @@ const styles = StyleSheet.create({
   },
   textHelloWorld: {
     fontSize: 30
+  },
+  item: {
+    flex: 1
   }
 })
 
