@@ -2,28 +2,19 @@ import React from 'react';
 
 import {
   TouchableOpacity,
-  StyleSheet,
   Text
 } from 'react-native';
 
-const ProductImage = (props) => {
+const ProductImage = ({ id, price, onTouch, style}) => {
   return (
     <TouchableOpacity
-      style={styles.touchableImage}
-      onPress={props.onPress}
+      style={style}
+      onPress={onTouch}
     >
-      <Text>{props.id}</Text>
+      <Text>{id}</Text>
+      <Text>{price}원</Text>
     </TouchableOpacity>
   )
 }
-
-const styles = StyleSheet.create({
-  touchableImage: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-    margin: 5
-  }
-})
 
 export default ProductImage;
