@@ -53,8 +53,9 @@ const styles = StyleSheet.create({
     backgroundColor: 'lavender',
   },
   productItem: {
-    backgroundColor: 'coral',
-    padding: 10,
+    padding: 1,
+    marginBottom: 5,
+    width: "33.3%",
   }
 })
 

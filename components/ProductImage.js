@@ -2,18 +2,22 @@ import React from 'react';
 
 import {
   TouchableOpacity,
-  Text
+  Text,
+  View
 } from 'react-native';
 
 const ProductImage = ({ id, price, onTouch, style}) => {
   return (
-    <TouchableOpacity
-      style={style}
-      onPress={onTouch}
-    >
-      <Text>{id}</Text>
+    <View
+      style={style}>
+      <TouchableOpacity
+        onPress={onTouch}
+        style={{backgroundColor: "coral", minHeight: 100}}
+      >
+        <Text>{id}</Text>
+      </TouchableOpacity>
       <Text>{price}원</Text>
-    </TouchableOpacity>
+    </View>
   )
 }
 
