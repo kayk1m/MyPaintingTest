@@ -23,6 +23,15 @@ import PostListScreen from './components/screens/PostListScreen'
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
 
+const HomeStack = () => {
+  return (
+    <Stack.Navigator>
+      <Stack.Screen name='Home' component={HomeScreen} />
+      <Stack.Screen name='PostList' component={PostListScreen} options={({ route }) => ({ title: route.params.id })}/>
+    </Stack.Navigator>
+  )
+}
+
 const MyPageStack = () => {
   return (
     <Stack.Navigator>
@@ -37,8 +46,8 @@ const MainTabNavigator = () => {
     <NavigationContainer>
       <Tab.Navigator>
         <Tab.Screen
-          name='Home'
-          component={HomeScreen}
+          name='HomeStack'
+          component={HomeStack}
           options={{
             tabBarIcon: ({ color, size }) => <Icon name='home' size={size} color={color} />,
           }}
@@ -65,7 +74,7 @@ const MainTabNavigator = () => {
           }}
         />
         <Tab.Screen
-          name='MyPage'
+          name='MyPageStack'
           component={MyPageStack}
           options={{
             tabBarIcon: ({ color, size }) => <Icon name='face' size={size} color={color} />
