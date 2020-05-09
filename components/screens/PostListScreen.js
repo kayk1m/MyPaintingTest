@@ -36,9 +36,11 @@ const PostListScreen = () => {
             renderItem={({ item }) => (
               <ProductImage
                 id={item.id}
+                url={serverURL + 'images/' + item.src}
                 price={item.price}
                 onTouch={() => {}}
                 style={styles.productItem}
+                width={SCREEN_WIDTH / 3}
               />
             )}
             numColumns={3}
