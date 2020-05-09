@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 
 import {
+  Dimensions,
   FlatList,
   SafeAreaView,
   StyleSheet,
@@ -10,6 +11,9 @@ import {
 } from 'react-native';
 
 import ProductImage from '../ProductImage';
+
+const { width, height } = Dimensions.get('window');
+const SCREEN_WIDTH = width < height ? width : height;
 
 const PostListScreen = () => {
   const [data, setData] = useState([]);
@@ -53,9 +57,9 @@ const styles = StyleSheet.create({
     backgroundColor: 'lavender',
   },
   productItem: {
-    padding: 1,
+    paddingBottom: 10,
     marginBottom: 5,
-    width: "33.3%",
+    width: SCREEN_WIDTH / 3,
   }
 })
 
