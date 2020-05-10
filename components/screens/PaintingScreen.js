@@ -8,7 +8,7 @@ import {
   StatusBar,
 } from 'react-native';
 
-const PaletteScreen = ({ navigation }) => {
+const PaintingScreen = ({ navigation }) => {
   return (
     <View style={styles.container}>
       <StatusBar barStyle='dark-content' backgroundColor='lavender' />
@@ -32,4 +32,4 @@ const styles = StyleSheet.create({
   }
 })
 
-export default PaletteScreen;
+export default PaintingScreen;

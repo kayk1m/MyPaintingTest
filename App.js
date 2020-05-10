@@ -14,9 +14,8 @@ import { createStackNavigator } from '@react-navigation/stack';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
 import HomeScreen from './components/screens/HomeScreen'
-import PaletteScreen from './components/screens/PaletteScreen'
-import UploadScreen from './components/screens/UploadScreen'
-import InboxScreen from './components/screens/InboxScreen'
+import PaintingScreen from './components/screens/PaintingScreen'
+import ProductScreen from './components/screens/ProductScreen'
 import MyPageScreen from './components/screens/MyPageScreen'
 import PostListScreen from './components/screens/PostListScreen'
 
@@ -53,24 +52,17 @@ const MainTabNavigator = () => {
           }}
         />
         <Tab.Screen
-          name='Palette'
-          component={PaletteScreen}
+          name='Painting'
+          component={PaintingScreen}
           options={{
             tabBarIcon: ({ color, size }) => <Icon name='palette' size={size} color={color} />
           }}
         />
         <Tab.Screen
-          name='Upload'
-          component={UploadScreen}
+          name='Product'
+          component={ProductScreen}
           options={{
-            tabBarIcon: ({ color, size }) => <Icon name='plus' size={size} color={color} />
-          }}
-        />
-        <Tab.Screen
-          name='Inbox'
-          component={InboxScreen}
-          options={{
-            tabBarIcon: ({ color, size }) => <Icon name='email' size={size} color={color} />
+            tabBarIcon: ({ color, size }) => <Icon name='cart' size={size} color={color} />
           }}
         />
         <Tab.Screen
