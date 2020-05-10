@@ -5,8 +5,7 @@ import {
   StyleSheet,
   View,
   Text,
-  StatusBar,
-  Button
+  StatusBar
 } from 'react-native';
 
 const MyPageScreen = ({ navigation }) => {
@@ -15,12 +14,6 @@ const MyPageScreen = ({ navigation }) => {
       <StatusBar barStyle='dark-content' backgroundColor='lavender' />
       <SafeAreaView>
         <Text style={styles.textHelloWorld}>My Page!</Text>
-        <Button
-          title='Go to PostListScreen'
-          onPress={() => {
-            navigation.navigate('PostList', { id: 'My ID is here.' })
-          }}
-        />
       </SafeAreaView>
     </View>
   )
