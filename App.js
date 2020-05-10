@@ -35,8 +35,8 @@ const PaintingStack = () => {
   return (
     <Stack.Navigator>
       <Stack.Screen name='Painting' component={PaintingScreen} />
-      <Stack.Screen name='Profile' component={ProfileScreen} options={({ route }) => ({ title: route.params.user_id })}/>
-      <Stack.Screen name='PaintingDetail' component={PaintingDetailScreen} options={({ route }) => ({ title: route.params.painting_id })}/>
+      <Stack.Screen name='Profile' component={ProfileScreen} options={({ route }) => ({ title: route.params.user_name })}/>
+      <Stack.Screen name='PaintingDetail' component={PaintingDetailScreen} options={({ route }) => ({ title: route.params.painting_name })}/>
     </Stack.Navigator>
   )
 }
@@ -45,7 +45,7 @@ const MyPageStack = () => {
   return (
     <Stack.Navigator>
       <Stack.Screen name='MyPage' component={MyPageScreen} />
-      <Stack.Screen name='Profile' component={ProfileScreen} options={({ route }) => ({ title: route.params.user_id })}/>
+      <Stack.Screen name='Profile' component={ProfileScreen} options={({ route }) => ({ title: route.params.user_name })}/>
     </Stack.Navigator>
   )
 }
