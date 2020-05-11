@@ -24,6 +24,7 @@ const PaintingScreen = ({ navigation }) => {
   }, []);
 
   const fetchData = async () => {
+    setData(null);
     fetch(serverURL + 'painting_list.json')
       .then((response) => response.json())
       .then((json) => {

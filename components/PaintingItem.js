@@ -38,7 +38,7 @@ const PaintingItem = ({ navigation, item }) => {
         </TouchableWithoutFeedback>
       </View>
       <Image
-        source={{ uri: serverURL + 'images/' + item.src }}
+        source={{ uri: serverURL + 'images2/' + item.src }}
         style={{ width: SCREEN_WIDTH, height: SCREEN_WIDTH }}
       />
       <View style={styles.statusAndMore}>

@@ -25,6 +25,7 @@ const ProfileScreen = ({ route, navigation }) => {
   }, []);
 
   const fetchData = async () => {
+    setData(null);
     fetch(serverURL + 'user_list.json')
       .then((response) => response.json())
       .then((json) => {
@@ -50,7 +51,7 @@ const ProfileScreen = ({ route, navigation }) => {
         });
       }}>
         <Image
-          source={{ uri: serverURL + 'images/' + item.src }}
+          source={{ uri: serverURL + 'images2/' + item.src }}
           style={{ width: SCREEN_WIDTH/3, height: SCREEN_WIDTH/3 }}
         />
       </TouchableWithoutFeedback>
