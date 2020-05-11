@@ -13,6 +13,8 @@ import {
   Button,
 } from 'react-native';
 
+import { useScrollToTop } from '@react-navigation/native';
+
 const { width, height } = Dimensions.get('window');
 const SCREEN_WIDTH = width < height ? width : height;
 const serverURL = 'http://jeonghyunkay.ipdisk.co.kr:8000/list/HDD2/Kay/';
@@ -98,6 +100,10 @@ const ProfileScreen = ({ route, navigation }) => {
     fetchData();
   };
 
+  const ref = React.useRef(null);
+
+  useScrollToTop(ref);
+
   return (
     <View style={styles.container}>
       <StatusBar barStyle='dark-content' backgroundColor='lavender' />
@@ -111,6 +117,7 @@ const ProfileScreen = ({ route, navigation }) => {
                 return item.user_id === user_id;
               })} />
               <FlatList
+                ref={ref}
                 data={data.find((item, idx) => {
                   return item.user_id === user_id;
                 }).paintings}
