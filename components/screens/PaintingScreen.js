@@ -20,7 +20,7 @@ const PaintingScreen = ({ navigation }) => {
   const [data, setData] = useState(null);
 
   const fetchData = async () => {
-    fetch(serverURL + 'post_list.json')
+    fetch(serverURL + 'painting_list.json')
       .then((response) => response.json())
       .then((json) => {
         setData(json.data);
@@ -38,6 +38,7 @@ const PaintingScreen = ({ navigation }) => {
 
   const _handleRefresh = async () => {
     setLoading(false);
+    setData(null);
     fetchData();
   }
 
@@ -50,7 +51,7 @@ const PaintingScreen = ({ navigation }) => {
           initialNumToRender={3}
           refreshing={isLoading}
           onRefresh={_handleRefresh}
-          keyExtractor={item => item.painting_id}
+          keyExtractor={item => item.painting_id.toString()}
           showsVerticalScrollIndicator={false}
           renderItem={({ item }) => <PaintingItem navigation={navigation} item={item} />}
         />
