@@ -22,7 +22,7 @@ const PROFILE_IMAGE_SIZE = SCREEN_WIDTH/3.5;
 
 const ProfileScreen = ({ route, navigation }) => {
   const [isLoading, setLoading] = useState(true);
-  const [data, setData] = useState(null);
+  const [data, setData] = useState([]);
 
   useEffect(() => {
     fetchData();
@@ -31,9 +31,12 @@ const ProfileScreen = ({ route, navigation }) => {
   const fetchData = async () => {
     setLoading(true);
     setData(null);
-    fetch(serverURL + 'user_list.json')
-      .then((response) => response.json())
-      .then((json) => setData(json.users))
+    fetch(serverURL + 'user_list.json', {
+      headers: {
+        'Cache-Control': 'no-cache'
+      }
+    }).then((response) => response.json())
+      .then((json) => setData(json.users || []))
       .catch((error) => console.error(error))
       .finally(() => setLoading(false));
   };

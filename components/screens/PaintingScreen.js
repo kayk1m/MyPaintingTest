@@ -16,25 +16,27 @@ const serverURL = 'http://jeonghyunkay.ipdisk.co.kr:8000/list/HDD2/Kay/';
 
 const PaintingScreen = ({ navigation }) => {
   const [isLoading, setLoading] = useState(true);
-  const [data, setData] = useState(null);
+  const [data, setData] = useState([]);
 
   useEffect(() => {
     fetchData();
   }, []);
 
   const fetchData = async () => {
-    setData(null);
-    fetch(serverURL + 'painting_list.json')
-      .then((response) => response.json())
+    fetch(serverURL + 'painting_list.json', {
+      headers: {
+        'Cache-Control': 'no-cache'
+      }
+    }).then((response) => response.json())
       .then((json) => {
-        setData(json.data);
+        setData(json.data || []);
         setLoading(false);
       })
       .catch((error) => console.error(error));
   };
 
   const _handleRefresh = async () => {
-    setLoading(false);
+    setLoading(true);
     setData(null);
     fetchData();
   };
