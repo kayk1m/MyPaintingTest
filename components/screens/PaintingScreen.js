@@ -4,12 +4,11 @@ import {
   SafeAreaView,
   StyleSheet,
   View,
-  Text,
   StatusBar,
-  FlatList,
-  TouchableWithoutFeedback,
-  Image
+  FlatList
 } from 'react-native';
+
+import { useScrollToTop } from '@react-navigation/native';
 
 import PaintingItem from '../PaintingItem';
 
@@ -40,11 +39,16 @@ const PaintingScreen = ({ navigation }) => {
     fetchData();
   };
 
+  const ref = React.useRef(null);
+
+  useScrollToTop(ref);
+
   return (
     <View style={styles.container}>
       <StatusBar barStyle='dark-content' backgroundColor='lavender' />
       <SafeAreaView>
         <FlatList
+          ref={ref}
           data={data}
           initialNumToRender={3}
           refreshing={isLoading}
