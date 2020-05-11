@@ -7,6 +7,7 @@ import {
   Image,
   Dimensions
 } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
 
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
@@ -16,7 +17,8 @@ const { width, height } = Dimensions.get('window');
 const SCREEN_WIDTH = width < height ? width : height;
 const iconSize = 20;
 
-const PaintingItem = ({ navigation, item }) => {
+const PaintingItem = ({ item }) => {
+  const navigation = useNavigation();
   return (
     <View style={styles.item}>
       <View style={styles.nameAndName}>
