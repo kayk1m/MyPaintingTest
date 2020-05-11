@@ -31,10 +31,7 @@ const PaintingScreen = ({ navigation }) => {
         setData(json.data);
         setLoading(false);
       })
-      .catch((error) => console.error(error))
-      .finally(() => {
-        console.log('PaintingScreen: data recieved!!');
-      });
+      .catch((error) => console.error(error));
   };
 
   const _handleRefresh = async () => {
