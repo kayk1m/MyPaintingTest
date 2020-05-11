@@ -76,6 +76,9 @@ target 'MyPaintings' do
   pod 'DoubleConversion', :podspec => '../node_modules/react-native/third-party-podspecs/DoubleConversion.podspec'
   pod 'glog', :podspec => '../node_modules/react-native/third-party-podspecs/glog.podspec'
   pod 'Folly', :podspec => '../node_modules/react-native/third-party-podspecs/Folly.podspec'
+  pod 'RNVectorIcons', :path => '../node_modules/react-native-vector-icons'
+
+
 
   target 'MyPaintingsTests' do
     inherit! :complete
@@ -102,3 +105,4 @@ target 'MyPaintings-tvOS' do
     # Pods for testing
   end
 end
+
