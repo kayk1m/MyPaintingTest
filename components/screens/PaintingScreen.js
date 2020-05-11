@@ -37,7 +37,7 @@ const PaintingScreen = ({ navigation }) => {
 
   const _handleRefresh = async () => {
     setLoading(true);
-    setData([]]);
+    setData([]);
     fetchData();
   };
 
