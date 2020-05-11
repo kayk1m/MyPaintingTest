@@ -16,7 +16,7 @@ const HomeScreen = ({ navigation }) => {
         <Text>Home Screen!</Text>
       </SafeAreaView>
     </View>
-  )
+  );
 }
 
 const styles = StyleSheet.create({
@@ -27,6 +27,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     backgroundColor: 'lavender',
   }
-})
+});
 
 export default HomeScreen;

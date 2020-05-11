@@ -25,8 +25,8 @@ const PaintingScreen = ({ route, navigation }) => {
       <SafeAreaView>
       </SafeAreaView>
     </View>
-  )
-}
+  );
+};
 
 const styles = StyleSheet.create({
   container: {
@@ -36,6 +36,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     backgroundColor: 'lavender',
   }
-})
+});
 
 export default PaintingScreen;

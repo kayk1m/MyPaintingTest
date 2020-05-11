@@ -20,6 +20,10 @@ const ProfileScreen = ({ route, navigation }) => {
   const [isLoading, setLoading] = useState(true);
   const [data, setData] = useState(null);
 
+  useEffect(() => {
+    fetchData();
+  }, []);
+
   const fetchData = async () => {
     fetch(serverURL + 'user_list.json')
       .then((response) => response.json())
@@ -32,13 +36,8 @@ const ProfileScreen = ({ route, navigation }) => {
       .catch((error) => console.error(error))
       .finally(() => {
         console.log('ProfileScreen: data recieved!!');
-        console.log(data);
       });
-  }
-
-  useEffect(() => {
-    fetchData();
-  }, []);
+  };
 
   const user_id = route.params.user_id;
 
@@ -48,7 +47,7 @@ const ProfileScreen = ({ route, navigation }) => {
         navigation.navigate('PaintingDetail', {
           painting_id: item.painting_id,
           painting_name: item.name
-        })
+        });
       }}>
         <Image
           source={{ uri: serverURL + 'images/' + item.src }}
@@ -56,14 +55,12 @@ const ProfileScreen = ({ route, navigation }) => {
         />
       </TouchableWithoutFeedback>
     )
-  })
+  });
 
   const _handleRefresh = async () => {
     setLoading(false);
     fetchData();
-  }
-
-
+  };
 
   return (
     <View style={styles.container}>
@@ -73,15 +70,15 @@ const ProfileScreen = ({ route, navigation }) => {
             data={data}
             refreshing={isLoading}
             onRefresh={_handleRefresh}
-            keyExtractor={item => item.painting_id}
+            keyExtractor={item => item.painting_id.toString()}
             showsVerticalScrollIndicator={false}
             renderItem={({ item }) => <Item item={item} />}
             numColumns={3}
           />
       </SafeAreaView>
     </View>
-  )
-}
+  );
+};
 
 const styles = StyleSheet.create({
   container: {
@@ -96,6 +93,6 @@ const styles = StyleSheet.create({
     marginBottom: 5,
     width: SCREEN_WIDTH / 3,
   }
-})
+});
 
 export default ProfileScreen;

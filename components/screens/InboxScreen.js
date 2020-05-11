@@ -16,8 +16,8 @@ const InboxScreen = ({ navigation }) => {
         <Text style={styles.textHelloWorld}>Inbox Page!</Text>
       </SafeAreaView>
     </View>
-  )
-}
+  );
+};
 
 const styles = StyleSheet.create({
   container: {
@@ -30,6 +30,6 @@ const styles = StyleSheet.create({
   textHelloWorld: {
     fontSize: 30
   }
-})
+});
 
 export default InboxScreen;

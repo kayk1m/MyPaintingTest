@@ -16,8 +16,8 @@ const UploadScreen = ({ navigation }) => {
         <Text style={styles.textHelloWorld}>Upload Page!</Text>
       </SafeAreaView>
     </View>
-  )
-}
+  );
+};
 
 const styles = StyleSheet.create({
   container: {
@@ -30,6 +30,6 @@ const styles = StyleSheet.create({
   textHelloWorld: {
     fontSize: 30
   }
-})
+});
 
 export default UploadScreen;

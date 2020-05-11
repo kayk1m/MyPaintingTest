@@ -19,6 +19,10 @@ const PaintingScreen = ({ navigation }) => {
   const [isLoading, setLoading] = useState(true);
   const [data, setData] = useState(null);
 
+  useEffect(() => {
+    fetchData();
+  }, []);
+
   const fetchData = async () => {
     fetch(serverURL + 'painting_list.json')
       .then((response) => response.json())
@@ -30,17 +34,13 @@ const PaintingScreen = ({ navigation }) => {
       .finally(() => {
         console.log('PaintingScreen: data recieved!!');
       });
-  }
-
-  useEffect(() => {
-    fetchData();
-  }, []);
+  };
 
   const _handleRefresh = async () => {
     setLoading(false);
     setData(null);
     fetchData();
-  }
+  };
 
   return (
     <View style={styles.container}>
@@ -57,8 +57,8 @@ const PaintingScreen = ({ navigation }) => {
         />
       </SafeAreaView>
     </View>
-  )
-}
+  );
+};
 
 const styles = StyleSheet.create({
   container: {
@@ -67,6 +67,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     backgroundColor: 'lavender'
   }
-})
+});
 
 export default PaintingScreen;

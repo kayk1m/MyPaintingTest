@@ -16,8 +16,8 @@ const MyPageScreen = ({ navigation }) => {
         <Text style={styles.textHelloWorld}>My Page!</Text>
       </SafeAreaView>
     </View>
-  )
-}
+  );
+};
 
 const styles = StyleSheet.create({
   container: {
@@ -30,6 +30,6 @@ const styles = StyleSheet.create({
   textHelloWorld: {
     fontSize: 30
   }
-})
+});
 
 export default MyPageScreen;

@@ -24,7 +24,7 @@ const PaintingItem = ({ navigation, item }) => {
           navigation.navigate('PaintingDetail', {
             painting_id: item.painting_id,
             painting_name: item.name
-          })
+          });
         }}>
           <Text style={styles.itemNameText}>{item.name}</Text>
         </TouchableWithoutFeedback>
@@ -32,7 +32,7 @@ const PaintingItem = ({ navigation, item }) => {
           navigation.navigate('Profile', {
             user_id: item.user_id,
             user_name: item.user_name
-          })
+          });
         }}>
           <Text style={styles.itemNameText}>{item.user_name}</Text>
         </TouchableWithoutFeedback>
@@ -58,14 +58,14 @@ const PaintingItem = ({ navigation, item }) => {
           navigation.navigate('PaintingDetail', {
             painting_id: item.painting_id,
             painting_name: item.name
-          })
+          });
         }}>
           <Text>자세히</Text>
         </TouchableWithoutFeedback>
       </View>
     </View>
-  )
-}
+  );
+};
 
 const styles = StyleSheet.create({
   item: {
@@ -82,6 +82,6 @@ const styles = StyleSheet.create({
   status: {
     flexDirection: 'row'
   }
-})
+});
 
 export default React.memo(PaintingItem);
