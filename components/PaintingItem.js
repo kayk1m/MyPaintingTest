@@ -14,7 +14,7 @@ const serverURL = 'http://jeonghyunkay.ipdisk.co.kr:8000/list/HDD2/Kay/';
 
 const { width, height } = Dimensions.get('window');
 const SCREEN_WIDTH = width < height ? width : height;
-const iconSize = 25;
+const iconSize = 20;
 
 const PaintingItem = ({ navigation, item }) => {
   return (
@@ -52,7 +52,7 @@ const PaintingItem = ({ navigation, item }) => {
               <Icon name='heart-outline' size={iconSize} color={'black'} />
             }
           </TouchableWithoutFeedback>
-          <Text>{item.num_like} likes</Text>
+          <Text style={styles.likeText}> {item.num_like} likes</Text>
         </View>
         <TouchableWithoutFeedback onPress={() => {
           navigation.navigate('PaintingDetail', {
@@ -60,7 +60,7 @@ const PaintingItem = ({ navigation, item }) => {
             painting_name: item.name
           });
         }}>
-          <Text>자세히</Text>
+          <Text style={styles.likeText}>자세히</Text>
         </TouchableWithoutFeedback>
       </View>
     </View>
@@ -72,15 +72,25 @@ const styles = StyleSheet.create({
     marginTop: 20
   },
   nameAndName: {
+    fontSize: 20,
+    padding: 10,
     flexDirection: 'row',
     justifyContent: 'space-between'
   },
+  itemNameText: {
+    fontSize: 20
+  },
   statusAndMore: {
+    padding: 10,
     flexDirection: 'row',
     justifyContent: 'space-between'
   },
   status: {
     flexDirection: 'row'
+  },
+  likeText: {
+    marginTop: -3,
+    fontSize: iconSize
   }
 });
 
