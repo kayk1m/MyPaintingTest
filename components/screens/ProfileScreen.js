@@ -98,8 +98,8 @@ const ProfileScreen = ({ route, navigation }) => {
   };
 
   const _handleRefresh = async () => {
-    await setData([]);
     await setLoading(true);
+    await setData([]);
     fetchData();
   };
 
