@@ -28,7 +28,7 @@ const ProfileScreen = ({ route, navigation }) => {
     fetchData();
   }, []);
 
-  const fetchData = async () => {
+  const fetchData = () => {
     fetch(`${serverURL}user_list.json`, {
       headers: {
         'Cache-Control': 'no-cache'
@@ -98,8 +98,8 @@ const ProfileScreen = ({ route, navigation }) => {
   };
 
   const _handleRefresh = async () => {
-    setData([]);
-    setLoading(true);
+    await setData([]);
+    await setLoading(true);
     fetchData();
   };
 
