@@ -29,7 +29,7 @@ const ProfileScreen = ({ route, navigation }) => {
   }, []);
 
   const fetchData = async () => {
-    fetch(serverURL + 'user_list.json', {
+    fetch(`${serverURL}user_list.json`, {
       headers: {
         'Cache-Control': 'no-cache'
       }
@@ -50,7 +50,7 @@ const ProfileScreen = ({ route, navigation }) => {
         });
       }}>
         <Image
-          source={{ uri: serverURL + 'images2/' + item.src }}
+          source={{ uri: `${serverURL}images2/${item.src}` }}
           style={{ width: SCREEN_WIDTH/3, height: SCREEN_WIDTH/3 }}
         />
       </TouchableWithoutFeedback>
@@ -87,7 +87,7 @@ const ProfileScreen = ({ route, navigation }) => {
       <View>
         <View style={{ flexDirection: 'row', padding: 20 }}>
           <Image
-            source={{ uri: serverURL + 'profile/' + user.profile_image_src }}
+            source={{ uri: `${serverURL}profile/${user.profile_image_src}` }}
             style={{ width: PROFILE_IMAGE_SIZE, height: PROFILE_IMAGE_SIZE, borderRadius: PROFILE_IMAGE_SIZE/2}}
           />
           <FanItem numFans={user.num_fan} />

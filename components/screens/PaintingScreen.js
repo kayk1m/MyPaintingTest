@@ -23,7 +23,7 @@ const PaintingScreen = ({ navigation }) => {
   }, []);
 
   const fetchData = async () => {
-    fetch(serverURL + 'painting_list.json', {
+    fetch(`${serverURL}painting_list.json`, {
       headers: {
         'Cache-Control': 'no-cache'
       }
