@@ -28,16 +28,13 @@ const PaintingScreen = ({ navigation }) => {
         'Cache-Control': 'no-cache'
       }
     }).then((response) => response.json())
-      .then((json) => {
-        setData(json.data || []);
-        setLoading(false);
-      })
-      .catch((error) => console.error(error));
+      .then((json) => setData(json.data || []))
+      .catch((error) => console.error(error))
+      .finally(() => setLoading(false));
   };
 
-  const _handleRefresh = async () => {
-    await setLoading(true);
-    await setData([]);
+  const _handleRefresh = () => {
+    console.log(`refreshing...`);
     fetchData();
   };
 
