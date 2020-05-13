@@ -98,6 +98,7 @@ const ProfileScreen = ({ route, navigation }) => {
   };
 
   const _handleRefresh = () => {
+    console.log(`refreshing...`);
     fetchData();
   };
 
