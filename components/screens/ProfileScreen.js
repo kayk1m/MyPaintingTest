@@ -33,8 +33,13 @@ const ProfileScreen = ({ route, navigation }) => {
       headers: {
         'Cache-Control': 'no-cache'
       }
-    }).then((response) => response.json())
-      .then((json) => setData(json.users || []))
+    }).then(response => {
+      if (!response.ok) {
+        throw new Error('Check Network Status');
+      }
+      return response.json();
+    })
+      .then(json => setData(json.users || []))
       .catch((error) => console.error(error))
       .finally(() => setLoading(false));
   };
