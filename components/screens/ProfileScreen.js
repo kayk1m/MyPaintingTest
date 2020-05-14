@@ -68,8 +68,8 @@ const ProfileScreen = ({ route, navigation }) => {
           flex: 1,
           flexDirection: 'row',
           justifyContent: 'space-around'
-        }}
-        >
+      }}
+      >
         <View style={{ justifyContent: 'center' }}>
           <Text>Fan</Text>
           <Text>{numFans}</Text>
@@ -78,8 +78,7 @@ const ProfileScreen = ({ route, navigation }) => {
           <View style={{
               width: SCREEN_WIDTH/6,
               height: SCREEN_WIDTH/12
-            }}
-          >
+          }}>
             <Button  title='팬 되기' />
           </View>
         </View>
@@ -114,29 +113,29 @@ const ProfileScreen = ({ route, navigation }) => {
   return (
     <View style={styles.container}>
       <StatusBar barStyle='dark-content' backgroundColor='lavender' />
-        <SafeAreaView>
-          {isLoading
-            ?
+      <SafeAreaView>
+        {isLoading
+          ?
             <Text>Loading ... </Text>
-            :
-            <View>
-              <ProfileHeader user={data.find((item, idx) => {
+          :
+          <View>
+            <ProfileHeader user={data.find((item, idx) => {
                 return item.user_id === user_id;
-              })} />
-              <FlatList
-                ref={ref}
-                data={data.find((item, idx) => {
+            })} />
+            <FlatList
+              ref={ref}
+              data={data.find((item, idx) => {
                   return item.user_id === user_id;
-                }).paintings}
-                refreshing={isLoading}
-                onRefresh={_handleRefresh}
-                keyExtractor={item => item.painting_id.toString()}
-                showsVerticalScrollIndicator={false}
-                renderItem={({ item }) => <Item item={item} />}
-                numColumns={3}
-              />
-            </View>
-          }
+              }).paintings}
+              refreshing={isLoading}
+              onRefresh={_handleRefresh}
+              keyExtractor={item => item.painting_id.toString()}
+              showsVerticalScrollIndicator={false}
+              renderItem={({ item }) => <Item item={item} />}
+              numColumns={3}
+            />
+          </View>
+        }
       </SafeAreaView>
     </View>
   );
