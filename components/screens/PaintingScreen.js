@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 
 import {
   SafeAreaView,
@@ -11,6 +11,7 @@ import {
 import { useScrollToTop } from '@react-navigation/native';
 
 import PaintingItem from '../PaintingItem';
+import AuthContext from '../../AuthContext';
 
 const serverURL = 'http://kay.airygall.com';
 
@@ -19,16 +20,22 @@ const PaintingScreen = ({ navigation }) => {
   const [data, setData] = useState([]);
   const [error, setError] = useState(null);
 
+  const { userToken, setUserToken } = useContext(AuthContext);
+
   useEffect(() => {
     fetchData();
   }, []);
 
   const fetchData = () => {
     fetch(`${serverURL}/paintings`, {
-      method: 'GET'
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': userToken.toString()
+      }
     }).then(res => {
       if (!res.ok) {
-        throw new Error('check Network Status');
+        throw new Error('Check Network Status');
       };
       return res.json();
     }).then(json =>  {

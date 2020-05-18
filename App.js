@@ -7,6 +7,7 @@
 
 import 'react-native-gesture-handler';
 import * as React from 'react';
+import { AsyncStorage } from '@react-native-community/async-storage';
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createStackNavigator } from '@react-navigation/stack';
@@ -19,6 +20,11 @@ import ProductScreen from './components/screens/ProductScreen';
 import MyPageScreen from './components/screens/MyPageScreen';
 import ProfileScreen from './components/screens/ProfileScreen';
 import PaintingDetailScreen from './components/screens/PaintingDetailScreen';
+import SignInScreen from './components/screens/SignInScreen';
+import SignUpScreen from './components/screens/SignUpScreen';
+import LoadingScreen from './components/screens/LoadingScreen';
+
+import AuthContext from './AuthContext';
 
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -50,41 +56,77 @@ const MyPageStack = () => {
   );
 };
 
-const MainTabNavigator = () => {
+const App = () => {
+  const [userToken, setUserToken] = React.useState(null);
+  const [isLoading, setLoading] = React.useState(true)
+
+  restoreToken = async () => {
+    let token = null;
+    try {
+      token = await AsyncStorage.getItem('userToken');
+      if (token == null) {
+        console.error('An Error Occured!');
+      } else {
+        setUserToken(token);
+      };
+    } catch (error) {
+      console.log(`No Token (Token Retoring Failed)`);
+    };
+
+    setLoading(false);
+  };
+
+  React.useEffect(() => {
+    console.log(`useEffect Called!`);
+    setLoading(false);
+  }, [])
+
+  if (isLoading) {
+    return <LoadingScreen />;
+  };
   return (
-    <NavigationContainer>
-      <Tab.Navigator>
-        <Tab.Screen
-          name='Home'
-          component={HomeStack}
-          options={{
-            tabBarIcon: ({ color, size }) => <Icon name='home' size={size} color={color} />,
-          }}
-        />
-        <Tab.Screen
-          name='Painting'
-          component={PaintingStack}
-          options={{
-            tabBarIcon: ({ color, size }) => <Icon name='palette' size={size} color={color} />
-          }}
-        />
-        <Tab.Screen
-          name='Product'
-          component={ProductScreen}
-          options={{
-            tabBarIcon: ({ color, size }) => <Icon name='cart' size={size} color={color} />
-          }}
-        />
-        <Tab.Screen
-          name='MyPage'
-          component={MyPageStack}
-          options={{
-            tabBarIcon: ({ color, size }) => <Icon name='face' size={size} color={color} />
-          }}
-        />
-      </Tab.Navigator>
-    </NavigationContainer>
+    <AuthContext.Provider value={{ userToken, setUserToken }}>
+      <NavigationContainer>
+        {userToken == null ? (
+          <Stack.Navigator>
+            <Stack.Screen name="SignIn" component={SignInScreen} />
+            <Stack.Screen name="SignUp" component={SignUpScreen} />
+          </Stack.Navigator>
+        ) : (
+          <Tab.Navigator>
+            <Tab.Screen
+              name='Home'
+              component={HomeStack}
+              options={{
+                tabBarIcon: ({ color, size }) => <Icon name='home' size={size} color={color} />,
+              }}
+            />
+            <Tab.Screen
+              name='Painting'
+              component={PaintingStack}
+              options={{
+                tabBarIcon: ({ color, size }) => <Icon name='palette' size={size} color={color} />
+              }}
+            />
+            <Tab.Screen
+              name='Product'
+              component={ProductScreen}
+              options={{
+                tabBarIcon: ({ color, size }) => <Icon name='cart' size={size} color={color} />
+              }}
+            />
+            <Tab.Screen
+              name='MyPage'
+              component={MyPageStack}
+              options={{
+                tabBarIcon: ({ color, size }) => <Icon name='face' size={size} color={color} />
+              }}
+            />
+          </Tab.Navigator>
+        )}
+      </NavigationContainer>
+    </AuthContext.Provider>
   );
 };
 
-export default MainTabNavigator;
+export default App;

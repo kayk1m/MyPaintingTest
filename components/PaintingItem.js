@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import {
   StyleSheet,
   View,
@@ -11,6 +11,8 @@ import { useNavigation } from '@react-navigation/native';
 
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
+import AuthContext from '../AuthContext';
+
 const serverURL = 'http://kay.airygall.com';
 const storageURL = 'http://jeonghyunkay.ipdisk.co.kr:8000/list/HDD2/Kay';
 
@@ -22,13 +24,19 @@ const PaintingItem = ({ item }) => {
   const [userName, setUserName] = useState('');
   const navigation = useNavigation();
 
+  const { userToken, setUserToken } = useContext(AuthContext);
+
   useEffect(() => {
     fetchData();
   }, []);
 
   const fetchData = () => {
     fetch(`${serverURL}/user/${item.userId}`, {
-      method: 'GET'
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': userToken.toString()
+      }
     }).then(res => {
       if (!res.ok) {
         throw new Error('Check Network Status');

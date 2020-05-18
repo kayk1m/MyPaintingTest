@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext } from 'react';
 
 import {
   SafeAreaView,
@@ -8,12 +8,16 @@ import {
   StatusBar,
 } from 'react-native';
 
+import AuthContext from '../../AuthContext';
+
 const HomeScreen = ({ navigation }) => {
+  const { userToken, setUserToken } = useContext(AuthContext);
+
   return (
     <View style={styles.container}>
       <StatusBar barStyle='dark-content' backgroundColor='lavender' />
       <SafeAreaView>
-        <Text>Home Screen!</Text>
+        <Text>{userToken}</Text>
       </SafeAreaView>
     </View>
   );

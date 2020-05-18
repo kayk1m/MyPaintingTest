@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 
 import {
   Dimensions,
@@ -14,6 +14,7 @@ import {
 } from 'react-native';
 
 import { useScrollToTop } from '@react-navigation/native';
+import AuthContext from '../../AuthContext';
 
 const { width, height } = Dimensions.get('window');
 const SCREEN_WIDTH = width < height ? width : height;
@@ -25,13 +26,19 @@ const ProfileScreen = ({ route, navigation }) => {
   const [isLoading, setLoading] = useState(true);
   const [data, setData] = useState([]);
 
+  const { userToken, setUserToken } = useContext(AuthContext);
+
   useEffect(() => {
     fetchData();
   }, []);
 
   const fetchData = () => {
     fetch(`${serverURL}/user/${route.params.user_id}/paintings`, {
-      method: 'GET'
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': userToken.toString()
+      }
     }).then(res => {
       if (!res.ok) {
         throw new Error('Check Network Status');
