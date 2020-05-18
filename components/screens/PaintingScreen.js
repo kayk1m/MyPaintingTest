@@ -12,30 +12,30 @@ import { useScrollToTop } from '@react-navigation/native';
 
 import PaintingItem from '../PaintingItem';
 
-const serverURL = 'http://jeonghyunkay.ipdisk.co.kr:8000/list/HDD2/Kay/';
+const serverURL = 'http://kay.airygall.com';
 
 const PaintingScreen = ({ navigation }) => {
   const [isLoading, setLoading] = useState(true);
   const [data, setData] = useState([]);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
     fetchData();
   }, []);
 
   const fetchData = () => {
-    fetch(`${serverURL}painting_list.json`, {
-      headers: {
-        'Cache-Control': 'no-cache'
-      }
-    }).then(response => {
-      if (!response.ok) {
-        throw new Error('Check Network Status');
-      }
-      return response.json();
+    fetch(`${serverURL}/paintings`, {
+      method: 'GET'
+    }).then(res => {
+      if (!res.ok) {
+        throw new Error('check Network Status');
+      };
+      return res.json();
+    }).then(json =>  {
+      setData(json.data || []);
+      setLoading(false);
     })
-      .then(json => setData(json.data || []))
-      .catch((error) => console.error(error))
-      .finally(() => setLoading(false));
+    .catch(err => console.error(err));
   };
 
   const _handleRefresh = () => {
@@ -57,7 +57,7 @@ const PaintingScreen = ({ navigation }) => {
           initialNumToRender={3}
           refreshing={isLoading}
           onRefresh={_handleRefresh}
-          keyExtractor={item => item.painting_id.toString()}
+          keyExtractor={item => item.id.toString()}
           showsVerticalScrollIndicator={false}
           renderItem={({ item }) => <PaintingItem navigation={navigation} item={item} />}
         />

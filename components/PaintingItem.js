@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   StyleSheet,
   View,
@@ -11,20 +11,39 @@ import { useNavigation } from '@react-navigation/native';
 
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
-const serverURL = 'http://jeonghyunkay.ipdisk.co.kr:8000/list/HDD2/Kay/';
+const serverURL = 'http://kay.airygall.com';
+const storageURL = 'http://jeonghyunkay.ipdisk.co.kr:8000/list/HDD2/Kay';
 
 const { width, height } = Dimensions.get('window');
 const SCREEN_WIDTH = width < height ? width : height;
 const iconSize = 20;
 
 const PaintingItem = ({ item }) => {
+  const [userName, setUserName] = useState('');
   const navigation = useNavigation();
+
+  useEffect(() => {
+    fetchData();
+  }, []);
+
+  const fetchData = () => {
+    fetch(`${serverURL}/user/${item.userId}`, {
+      method: 'GET'
+    }).then(res => {
+      if (!res.ok) {
+        throw new Error('Check Network Status');
+      };
+      return res.json();
+    }).then(json => setUserName(json.user.name, []))
+    .catch(err => console.error(err));
+  };
+
   return (
     <View style={styles.item}>
       <View style={styles.nameAndName}>
         <TouchableWithoutFeedback onPress={() => {
           navigation.navigate('PaintingDetail', {
-            painting_id: item.painting_id,
+            painting_id: item.id,
             painting_name: item.name
           });
         }}>
@@ -32,15 +51,15 @@ const PaintingItem = ({ item }) => {
         </TouchableWithoutFeedback>
         <TouchableWithoutFeedback onPress={() => {
           navigation.navigate('Profile', {
-            user_id: item.user_id,
-            user_name: item.user_name
+            user_id: item.userId,
+            user_name: userName
           });
         }}>
-          <Text style={styles.itemNameText}>{item.user_name}</Text>
+          <Text style={styles.itemNameText}>{userName}</Text>
         </TouchableWithoutFeedback>
       </View>
       <Image
-        source={{ uri: `${serverURL}images2/${item.src}` }}
+        source={{ uri: `${storageURL}/images2/${item.image_src}` }}
         style={{ width: SCREEN_WIDTH, height: SCREEN_WIDTH }}
       />
       <View style={styles.statusAndMore}>
@@ -50,15 +69,15 @@ const PaintingItem = ({ item }) => {
           }}>
             {item.liked ?
               <Icon name='heart' size={iconSize} color={'black'} />
-              :
-              <Icon name='heart-outline' size={iconSize} color={'black'} />
+            :
+            <Icon name='heart-outline' size={iconSize} color={'black'} />
             }
           </TouchableWithoutFeedback>
           <Text style={styles.likeText}> {item.num_like} likes</Text>
         </View>
         <TouchableWithoutFeedback onPress={() => {
           navigation.navigate('PaintingDetail', {
-            painting_id: item.painting_id,
+            painting_id: item.id,
             painting_name: item.name
           });
         }}>
