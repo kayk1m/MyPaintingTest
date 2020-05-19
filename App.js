@@ -7,7 +7,7 @@
 
 import 'react-native-gesture-handler';
 import * as React from 'react';
-import { AsyncStorage } from '@react-native-community/async-storage';
+import AsyncStorage from '@react-native-community/async-storage';
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createStackNavigator } from '@react-navigation/stack';
@@ -58,16 +58,35 @@ const MyPageStack = () => {
 
 const App = () => {
   const [userToken, setUserToken] = React.useState(null);
-  const [isLoading, setLoading] = React.useState(true)
+  const [isLoading, setLoading] = React.useState(true);
 
-  restoreToken = async () => {
-    let token = null;
+  React.useEffect(() => {
+    console.log(`useEffect Called!`);
+    restoreToken();
+    console.log(`userToken: ${userToken}`);
+    setLoading(false);
+  }, []);
+
+  const storeToken = async (token) => {
     try {
-      token = await AsyncStorage.getItem('userToken');
-      if (token == null) {
-        console.error('An Error Occured!');
+      const jsonToken = JSON.stringify(token);
+      await AsyncStorage.setItem('@userToken', jsonToken);
+      console.log(`TOKEN STORED: ${token}`);
+    } catch (error) {
+      console.error(`TOKEN STORING FAILED: ${error}`);
+    };
+  };
+
+  const restoreToken = async () => {
+    setLoading(true);
+    try {
+      const jsonToken = await AsyncStorage.getItem('@userToken');
+      if (jsonToken == null) {
+        console.log('RESTORED TOKEN IS NULL');
       } else {
+        const token = JSON.parse(jsonToken);
         setUserToken(token);
+        console.log(`TOKEN RESTORED: ${token}`);
       };
     } catch (error) {
       console.log(`No Token (Token Retoring Failed)`);
@@ -76,16 +95,69 @@ const App = () => {
     setLoading(false);
   };
 
-  React.useEffect(() => {
-    console.log(`useEffect Called!`);
-    setLoading(false);
-  }, [])
+  const signIn = async (email, password) => {
+    setLoading(true);
+    await fetch(`http://kay.airygall.com/auth/login`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ email, password })
+    })
+    .then(response => {
+      if (!response.ok) {
+        throw new Error('SIGN IN FAILED');
+      };
+      return response.json();
+    })
+    .then(data => {
+      setUserToken(data.token);
+      storeToken(data.token);
+      console.log('recievedToken: ', data.token);
+    })
+    .catch((error) => {
+      console.error(error);
+    })
+    .finally(() => {
+      setLoading(false);
+    });
+  };
+
+  const signUp = async (username, name, email, password, gender) => {
+    setLoading(true);
+    await fetch(`http://kay.airygall.com/auth/join`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ username, name, email, password, gender })
+    })
+    .then(response => {
+      if (!response.ok) {
+        throw new Error('SIGN IN FAILED');
+      };
+      return response.json();
+    })
+    .then(data => {
+      setUserToken(data.token);
+      storeToken(data.token);
+      setLoading(false);
+      console.log('recievedToken: ', data.token);
+      console.log('userToken: ', userToken);
+    })
+    .catch((error) => {
+      console.error(error);
+    })
+    .finally(() => {
+      setLoading(false);
+    });
+  };
 
   if (isLoading) {
     return <LoadingScreen />;
   };
   return (
-    <AuthContext.Provider value={{ userToken, setUserToken }}>
+    <AuthContext.Provider value={{ userToken, signIn, signUp }}>
       <NavigationContainer>
         {userToken == null ? (
           <Stack.Navigator>

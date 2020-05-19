@@ -18,29 +18,15 @@ const SignInScreen = ({ navigation }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
-  const { userToken, setUserToken } = useContext(AuthContext);
+  const { signIn } = useContext(AuthContext);
 
   const hashPassword = async (input) => {
     return await sha256(input);
   };
 
-  const signIn = async () => {
+  const callSignIn = async () => {
     const hashed = await hashPassword(password);
-    fetch(`http://kay.airygall.com/auth/login`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ email, password: hashed })
-    })
-    .then(response => response.json())
-    .then(data => {
-      console.log('Token Saved: ', data.token);
-      setUserToken(data.token);
-    })
-    .catch((error) => {
-      console.error(error);
-    });
+    signIn(email, hashed);
   };
 
   return (
@@ -60,7 +46,7 @@ const SignInScreen = ({ navigation }) => {
             secureTextEntry
           />
           <View style={styles.spacing} />
-          <Button title='Sign in' onPress={() => signIn()} />
+          <Button title='Sign in' onPress={() => callSignIn()} />
           <View style={styles.spacing} />
           <Button title='Sign Up' onPress={() => navigation.navigate('SignUp')} />
         </View>
@@ -74,7 +60,6 @@ const styles = StyleSheet.create({
     padding: 20,
     flex: 1,
     justifyContent: 'center',
-    // alignItems: 'center',
     backgroundColor: 'lavender',
   },
   spacing: {
