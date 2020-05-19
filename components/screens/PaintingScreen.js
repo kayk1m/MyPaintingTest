@@ -20,7 +20,7 @@ const PaintingScreen = ({ navigation }) => {
   const [data, setData] = useState([]);
   const [error, setError] = useState(null);
 
-  const { userToken } = useContext(AuthContext);
+  const { accessToken } = useContext(AuthContext);
 
   useEffect(() => {
     fetchData();
@@ -31,7 +31,7 @@ const PaintingScreen = ({ navigation }) => {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
-        'Authorization': userToken.toString()
+        'Authorization': accessToken.toString()
       }
     }).then(res => {
       if (!res.ok) {

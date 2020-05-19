@@ -57,109 +57,148 @@ const MyPageStack = () => {
 };
 
 const App = () => {
-  const [userToken, setUserToken] = React.useState(null);
+  const [accessToken, setAccessToken] = React.useState(null);
+  const [refreshToken, setRefreshToken] = React.useState(null);
   const [isLoading, setLoading] = React.useState(true);
+  const [isLoggedIn, setLoggedIn] = React.useState(false);
 
   React.useEffect(() => {
     console.log(`useEffect Called!`);
     restoreToken();
-    console.log(`userToken: ${userToken}`);
-    setLoading(false);
   }, []);
 
-  const storeToken = async (token) => {
+  const storeToken = async (access_token, refresh_token) => {
     try {
-      const jsonToken = JSON.stringify(token);
-      await AsyncStorage.setItem('@userToken', jsonToken);
-      console.log(`TOKEN STORED: ${token}`);
-    } catch (error) {
-      console.error(`TOKEN STORING FAILED: ${error}`);
+      await AsyncStorage.setItem('@refresh_token', JSON.stringify(refresh_token));
+      await AsyncStorage.setItem('@access_token', JSON.stringify(access_token));
+      console.log(`REFRESH_TOKEN STORED: ${refresh_token}`);
+      console.log(`ACCESS_TOKEN STORED: ${access_token}`);
+    } catch (e) {
+      throw new Error(`TOKEN STORING FAILED: ${e}`);
     };
   };
 
   const restoreToken = async () => {
-    setLoading(true);
     try {
-      const jsonToken = await AsyncStorage.getItem('@userToken');
-      if (jsonToken == null) {
-        console.log('RESTORED TOKEN IS NULL');
-      } else {
-        const token = JSON.parse(jsonToken);
-        setUserToken(token);
-        console.log(`TOKEN RESTORED: ${token}`);
-      };
-    } catch (error) {
-      console.log(`No Token (Token Retoring Failed)`);
-    };
+      const refresh_token = JSON.parse(await AsyncStorage.getItem('@refresh_token'));
+      const access_token = JSON.parse(await AsyncStorage.getItem('@access_token'));
 
-    setLoading(false);
+      console.log(`REFRESH_TOKEN RESTORED: ${refresh_token}`);
+      console.log(`ACCESS_TOKEN RESTORED: ${access_token}`);
+
+      if (refresh_token && access_token) {
+        getAccessToken(refresh_token, access_token);
+      } else {
+        setLoading(false);
+      }
+    } catch (e) {
+      throw new Error(`No Token (Token Retoring Failed): ${e}`);
+    };
+  };
+
+  const getAccessToken = async (refresh_token, access_token) => {
+    try {
+      const response = await fetch(`http://kay.airygall.com/auth/token`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': access_token
+        },
+        body: JSON.stringify({ refresh_token })
+      });
+
+      const resJson = await response.json();
+      if (!response.ok) {
+        console.log(`GET ACCESS_TOKEN ERROR: ${JSON.stringify(resJson)}`);
+        // need handling failure
+      } else {
+        setAccessToken(resJson.token);
+        setRefreshToken(refresh_token);
+        storeToken(resJson.token, refresh_token);
+        console.log(`ACCESS_TOKEN RECIEVED: ${resJson.token}`);
+        setLoggedIn(true);
+      };
+    } catch (e) {
+      throw new Error(`ERROR: ${e}`);
+    } finally {
+      setLoading(false);
+    };
   };
 
   const signIn = async (email, password) => {
-    setLoading(true);
-    await fetch(`http://kay.airygall.com/auth/login`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ email, password })
-    })
-    .then(response => {
+    try {
+      response = await fetch(`http://kay.airygall.com/auth/login`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ email, password })
+      });
+
+      const resJson = await response.json();
       if (!response.ok) {
-        throw new Error('SIGN IN FAILED');
-      };
-      return response.json();
-    })
-    .then(data => {
-      setUserToken(data.token);
-      storeToken(data.token);
-      console.log('recievedToken: ', data.token);
-    })
-    .catch((error) => {
-      console.error(error);
-    })
-    .finally(() => {
-      setLoading(false);
-    });
+        console.log(`SIGN IN ERROR: ${JSON.stringify(resJson)}`);
+        // need handling failure
+      } else {
+        setAccessToken(resJson.token);
+        setRefreshToken(resJson.refresh_token);
+        storeToken(resJson.token, resJson.refresh_token);
+        console.log(`SIGN IN SUCESS`);
+          setLoggedIn(true);
+      }
+    } catch (e) {
+      throw new Error(`ERROR: ${e}`);
+    };
   };
 
   const signUp = async (username, name, email, password, gender) => {
-    setLoading(true);
-    await fetch(`http://kay.airygall.com/auth/join`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ username, name, email, password, gender })
-    })
-    .then(response => {
+    try {
+      response = await fetch(`http://kay.airygall.com/auth/join`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ username, name, email, password, gender })
+      });
+
+      const resJson = await response.json();
       if (!response.ok) {
-        throw new Error('SIGN IN FAILED');
-      };
-      return response.json();
-    })
-    .then(data => {
-      setUserToken(data.token);
-      storeToken(data.token);
-      setLoading(false);
-      console.log('recievedToken: ', data.token);
-      console.log('userToken: ', userToken);
-    })
-    .catch((error) => {
-      console.error(error);
-    })
-    .finally(() => {
-      setLoading(false);
-    });
+        console.log(`SIGN UP ERROR: ${JSON.stringify(resJson)}`);
+        // need handling failure
+      } else {
+        setAccessToken(resJson.token);
+        setRefreshToken(resJson.refresh_token);
+        storeToken(resJson.token, resJson.refresh_token);
+        console.log(`SIGN IN SUCESS`);
+        setLoggedIn(true);
+      }
+    } catch (e) {
+      throw new Error(`ERROR: ${e}`);
+    };
+  };
+
+  const removeStoredToken = async (key) => {
+    try {
+      await AsyncStorage.removeItem(kay);
+      return true;
+    } catch (e) {
+      return false;
+    };
+  };
+
+  const signOut = () => {
+    removeStoredToken('@refresh_token');
+    removeStoredToken('@access_token');
+    setLoggedIn(false);
   };
 
   if (isLoading) {
     return <LoadingScreen />;
   };
   return (
-    <AuthContext.Provider value={{ userToken, signIn, signUp }}>
+    <AuthContext.Provider value={{ accessToken, signIn, signUp, signOut }}>
       <NavigationContainer>
-        {userToken == null ? (
+        {!isLoggedIn ? (
           <Stack.Navigator>
             <Stack.Screen name="SignIn" component={SignInScreen} />
             <Stack.Screen name="SignUp" component={SignUpScreen} />

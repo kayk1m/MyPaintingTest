@@ -24,7 +24,7 @@ const PaintingItem = ({ item }) => {
   const [userName, setUserName] = useState('');
   const navigation = useNavigation();
 
-  const { userToken, setUserToken } = useContext(AuthContext);
+  const { accessToken } = useContext(AuthContext);
 
   useEffect(() => {
     fetchData();
@@ -35,7 +35,7 @@ const PaintingItem = ({ item }) => {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
-        'Authorization': userToken.toString()
+        'Authorization': accessToken.toString()
       }
     }).then(res => {
       if (!res.ok) {
