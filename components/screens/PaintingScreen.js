@@ -39,10 +39,8 @@ const PaintingScreen = ({ navigation }) => {
       };
       return res.json();
     }).then(json =>  {
-      console.log(json);
       setData(json.data || []);
       setLoading(false);
-      console.log(data);
     })
     .catch(err => console.error(err));
   };
