@@ -2,26 +2,19 @@ import React, { useState, useEffect, useContext } from 'react';
 import {
   StyleSheet,
   View,
-  TouchableWithoutFeedback,
-  Text,
-  Image,
-  Dimensions
+  TouchableWithoutFeedback
 } from 'react-native';
+import { Text, Image } from 'react-native-elements';
 import { useNavigation } from '@react-navigation/native';
 
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
+import { SCREEN_WIDTH, SERVER_URL, STORAGE_URL } from './defines';
 import AuthContext from '../AuthContext';
-
-const serverURL = 'http://kay.airygall.com';
-const storageURL = 'http://jeonghyunkay.ipdisk.co.kr:8000/list/HDD2/Kay';
-
-const { width, height } = Dimensions.get('window');
-const SCREEN_WIDTH = width < height ? width : height;
 const iconSize = 20;
 
 const PaintingItem = ({ item }) => {
-  const [userName, setUserName] = useState('');
+  const [userName, setUserName] = useState(null);
   const navigation = useNavigation();
 
   const { accessToken } = useContext(AuthContext);
@@ -30,20 +23,24 @@ const PaintingItem = ({ item }) => {
     fetchData();
   }, []);
 
-  const fetchData = () => {
-    fetch(`${serverURL}/user/${item.userId}`, {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': accessToken.toString()
+  const fetchData = async () => {
+    try {
+      const response = await fetch(`${SERVER_URL}/user/${item.userId}`, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': accessToken.toString()
+        }
+      })
+      const resJson = await response.json();
+      if (!response.ok) {
+        console.log(`GET USER FAILED ${JSON.stringify(resJson)}`);
+      } else {
+        setUserName(resJson.user.name);
       }
-    }).then(res => {
-      if (!res.ok) {
-        throw new Error('Check Network Status');
-      };
-      return res.json();
-    }).then(json => setUserName(json.user.name, []))
-    .catch(err => console.error(err));
+    } catch (e) {
+      throw new Error(`ERROR: ${e}`);
+    };
   };
 
   return (
@@ -67,7 +64,7 @@ const PaintingItem = ({ item }) => {
         </TouchableWithoutFeedback>
       </View>
       <Image
-        source={{ uri: `${storageURL}/images2/${item.image_src}` }}
+        source={{ uri: `${STORAGE_URL}/images2/${item.image_src}` }}
         style={{ width: SCREEN_WIDTH, height: SCREEN_WIDTH }}
       />
       <View style={styles.statusAndMore}>
@@ -123,4 +120,4 @@ const styles = StyleSheet.create({
   }
 });
 
-export default React.memo(PaintingItem);
+export default PaintingItem;

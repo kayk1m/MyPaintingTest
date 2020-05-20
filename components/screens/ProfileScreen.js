@@ -1,146 +1,73 @@
 import React, { useEffect, useState, useContext } from 'react';
 
-import {
-  Dimensions,
-  FlatList,
-  SafeAreaView,
-  StyleSheet,
-  View,
-  Text,
-  Image,
-  TouchableWithoutFeedback,
-  StatusBar,
-  Button,
-} from 'react-native';
+import { FlatList, StyleSheet, View, TouchableWithoutFeedback } from 'react-native';
+
+import { Text, Image, Button } from 'react-native-elements';
 
 import { useScrollToTop } from '@react-navigation/native';
 import AuthContext from '../../AuthContext';
+import ProfileHeader from '../ProfileHeader';
+import TouchablePainting from '../TouchablePainting';
 
-const { width, height } = Dimensions.get('window');
-const SCREEN_WIDTH = width < height ? width : height;
-const serverURL = 'http://kay.airygall.com';
-const storageURL = 'http://jeonghyunkay.ipdisk.co.kr:8000/list/HDD2/Kay';
-const PROFILE_IMAGE_SIZE = SCREEN_WIDTH/3.5;
+import {SERVER_URL} from '../defines';
 
-const ProfileScreen = ({ route, navigation }) => {
+const ProfileScreen = ({route, navigation}) => {
+  const [user, setUser] = userState(null);
+  const [paintings, setPaintings] = useState([]);
   const [isLoading, setLoading] = useState(true);
-  const [data, setData] = useState([]);
 
-  const { userToken, setUserToken } = useContext(AuthContext);
+  const { userToken } = useContext(AuthContext);
 
   useEffect(() => {
     fetchData();
   }, []);
 
-  const fetchData = () => {
-    fetch(`${serverURL}/user/${route.params.user_id}/paintings`, {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': userToken.toString()
-      }
-    }).then(res => {
-      if (!res.ok) {
-        throw new Error('Check Network Status');
+  const fetchData = async () => {
+    try {
+      const response = await fetch(`${SERVER_URL}/user/${user_id}/paintings`, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': accessToken.toString()
+        }
+      });
+      const resJson = await response.json();
+      if (!response.ok) {
+        console.log(`GET INFO WITH PAINTINGS ERROR: ${JSON.stringify(resJson)}`);
+        // need handling failure
+      } else {
+        setUser(resJson.user);
+        setPaintings(resJson.paintings);
+        console.log(`GETTING USER INFO WITH PAINTINGS SUCCESS`);
       };
-      return res.json();
-    }).then(json => {
-      setData(json || []);
+    } catch (e) {
+      throw new Error(`ERROR: ${e}`);
+    } finally {
       setLoading(false);
-    })
-    .catch((error) => console.error(error));
+    };
   };
 
   const user_id = route.params.user_id;
 
-  const Item = React.memo(({ item }) => {
-    return (
-      <TouchableWithoutFeedback onPress={() => {
-        navigation.navigate('PaintingDetail', {
-          painting_id: item.id,
-          painting_name: item.name
-        });
-      }}>
-        <Image
-          source={{ uri: `${storageURL}/images2/${item.image_src}` }}
-          style={{ width: SCREEN_WIDTH/3, height: SCREEN_WIDTH/3 }}
-        />
-      </TouchableWithoutFeedback>
-    );
-  });
-
-  const FanItem = ({ numFans }) => {
-    return (
-      <View style={{
-          flex: 1,
-          flexDirection: 'row',
-          justifyContent: 'space-around'
-      }}
-      >
-        <View style={{ justifyContent: 'center' }}>
-          <Text>Fan</Text>
-          <Text>{numFans}</Text>
-        </View>
-        <View style={{ justifyContent: 'center' }}>
-          <View style={{
-              width: SCREEN_WIDTH/6,
-              height: SCREEN_WIDTH/12
-          }}>
-            <Button  title='팬 되기' />
-          </View>
-        </View>
-      </View>
-    );
-  };
-
-  const ProfileHeader = ({ user }) => {
-    return (
-      <View>
-        <View style={{ flexDirection: 'row', padding: 20 }}>
-          <Image
-            source={{ uri: `${storageURL}/profile/${user.profile_pic_src}` }}
-            style={{ width: PROFILE_IMAGE_SIZE, height: PROFILE_IMAGE_SIZE, borderRadius: PROFILE_IMAGE_SIZE/2}}
-          />
-          <FanItem numFans={user.num_fans} />
-        </View>
-        <Text style={{ paddingLeft: 15, paddingBottom: 15 }}>{user.profile_msg}</Text>
-      </View>
-    );
-  };
-
-  const _handleRefresh = () => {
+  const handleRefresh = () => {
     console.log(`refreshing...`);
     fetchData();
   };
 
   const ref = React.useRef(null);
-
   useScrollToTop(ref);
 
-  return (
-    <View style={styles.container}>
-      <StatusBar barStyle='dark-content' backgroundColor='lavender' />
-      <SafeAreaView>
-        {isLoading
-          ? <Text>Loading ... </Text>
-          :
-          <View>
-            <ProfileHeader user={data.user} />
-            <FlatList
-              ref={ref}
-              data={data.paintings}
-              refreshing={isLoading}
-              onRefresh={_handleRefresh}
-              keyExtractor={item => item.id.toString()}
-              showsVerticalScrollIndicator={false}
-              renderItem={({ item }) => <Item item={item} />}
-              numColumns={3}
-            />
-          </View>
-        }
-      </SafeAreaView>
-    </View>
-  );
+  return (<View style={styles.container}>
+    {
+      isLoading
+        ? (<Text h2="h2">Loading ...
+        </Text>)
+        : (<View>
+          <ProfileHeader user={user}/>
+          <FlatList ref={ref} data={paintings} refreshing={isLoading} onRefresh={handleRefresh} keyExtractor={item => item.id.toString()} showsVerticalScrollIndicator={false} renderItem={({item}) => <TouchablePainting item={item}/>} numColumns={3}/>
+        </View>)
+    }
+  </View>);
 };
 
 const styles = StyleSheet.create({
@@ -148,13 +75,7 @@ const styles = StyleSheet.create({
     paddingTop: 10,
     flex: 1,
     justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: 'lavender',
-  },
-  productItem: {
-    paddingBottom: 10,
-    marginBottom: 5,
-    width: SCREEN_WIDTH / 3,
+    backgroundColor: 'lavender'
   }
 });
 

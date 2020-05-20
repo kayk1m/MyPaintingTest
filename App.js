@@ -24,6 +24,8 @@ import SignInScreen from './components/screens/SignInScreen';
 import SignUpScreen from './components/screens/SignUpScreen';
 import LoadingScreen from './components/screens/LoadingScreen';
 
+import { SERVER_URL } from './components/defines';
+
 import AuthContext from './AuthContext';
 
 const Stack = createStackNavigator();
@@ -31,7 +33,7 @@ const Tab = createBottomTabNavigator();
 
 const HomeStack = () => {
   return (
-    <Stack.Navigator>
+    <Stack.Navigator headerMode='none'>
       <Stack.Screen name='Home' component={HomeScreen} />
     </Stack.Navigator>
   );
@@ -39,7 +41,7 @@ const HomeStack = () => {
 
 const PaintingStack = () => {
   return (
-    <Stack.Navigator>
+    <Stack.Navigator headerMode='none'>
       <Stack.Screen name='Painting' component={PaintingScreen} />
       <Stack.Screen name='Profile' component={ProfileScreen} options={({ route }) => ({ title: route.params.user_name })}/>
       <Stack.Screen name='PaintingDetail' component={PaintingDetailScreen} options={({ route }) => ({ title: route.params.painting_name })}/>
@@ -49,9 +51,10 @@ const PaintingStack = () => {
 
 const MyPageStack = () => {
   return (
-    <Stack.Navigator>
+    <Stack.Navigator headerMode='none'>
       <Stack.Screen name='MyPage' component={MyPageScreen} />
       <Stack.Screen name='Profile' component={ProfileScreen} options={({ route }) => ({ title: route.params.user_name })}/>
+      <Stack.Screen name='PaintingDetail' component={PaintingDetailScreen} options={({ route }) => ({ title: route.params.painting_name })}/>
     </Stack.Navigator>
   );
 };
@@ -98,7 +101,7 @@ const App = () => {
 
   const getAccessToken = async (refresh_token, access_token) => {
     try {
-      const response = await fetch(`http://kay.airygall.com/auth/token`, {
+      const response = await fetch(`${SERVER_URL}/auth/token`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -127,7 +130,7 @@ const App = () => {
 
   const signIn = async (email, password) => {
     try {
-      response = await fetch(`http://kay.airygall.com/auth/login`, {
+      const response = await fetch(`${SERVER_URL}/auth/login`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -144,7 +147,7 @@ const App = () => {
         setRefreshToken(resJson.refresh_token);
         storeToken(resJson.token, resJson.refresh_token);
         console.log(`SIGN IN SUCESS`);
-          setLoggedIn(true);
+        setLoggedIn(true);
       }
     } catch (e) {
       throw new Error(`ERROR: ${e}`);
@@ -153,7 +156,7 @@ const App = () => {
 
   const signUp = async (username, name, email, password, gender) => {
     try {
-      response = await fetch(`http://kay.airygall.com/auth/join`, {
+      const response = await fetch(`${SERVER_URL}/auth/join`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -179,7 +182,8 @@ const App = () => {
 
   const removeStoredToken = async (key) => {
     try {
-      await AsyncStorage.removeItem(kay);
+      await AsyncStorage.removeItem(key);
+      console.log(`REMOVED STORED TOKEN WITH KEY: ${key}`);
       return true;
     } catch (e) {
       return false;
@@ -199,9 +203,9 @@ const App = () => {
     <AuthContext.Provider value={{ accessToken, signIn, signUp, signOut }}>
       <NavigationContainer>
         {!isLoggedIn ? (
-          <Stack.Navigator>
-            <Stack.Screen name="SignIn" component={SignInScreen} />
-            <Stack.Screen name="SignUp" component={SignUpScreen} />
+          <Stack.Navigator headerMode='none'>
+            <Stack.Screen name='SignIn' component={SignInScreen} />
+            <Stack.Screen name='SignUp' component={SignUpScreen} />
           </Stack.Navigator>
         ) : (
           <Tab.Navigator>

@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useState, useEffect, useContext, useRef } from 'react';
 
 import {
   SafeAreaView,
@@ -10,10 +10,10 @@ import {
 
 import { useScrollToTop } from '@react-navigation/native';
 
-import PaintingItem from '../PaintingItem';
+import PaintingListItem from '../PaintingListItem';
 import AuthContext from '../../AuthContext';
 
-const serverURL = 'http://kay.airygall.com';
+import { SERVER_URL } from '../defines';
 
 const PaintingScreen = ({ navigation }) => {
   const [isLoading, setLoading] = useState(true);
@@ -26,49 +26,50 @@ const PaintingScreen = ({ navigation }) => {
     fetchData();
   }, []);
 
-  const fetchData = () => {
-    fetch(`${serverURL}/paintings`, {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': accessToken.toString()
-      }
-    }).then(res => {
-      if (!res.ok) {
-        throw new Error('Check Network Status');
+  const fetchData = async () => {
+    try {
+      const response = await fetch(`${SERVER_URL}/paintings`, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': accessToken.toString()
+        }
+      });
+      const resJson = await response.json();
+      if (!response.ok) {
+        // handle error needed
+        console.log(`PAINTING SCREEN ERROR: ${JSON.stringify(resJson)}`);
+      } else {
+        setData(resJson.data);
       };
-      return res.json();
-    }).then(json =>  {
-      setData(json.data || []);
+    } catch (e) {
+      throw new Error(`ERROR: ${e}`);
+    } finally {
       setLoading(false);
-    })
-    .catch(err => console.error(err));
+    };
   };
 
-  const _handleRefresh = () => {
+  const handleRefresh = () => {
     console.log(`refreshing...`);
     fetchData();
   };
 
-  const ref = React.useRef(null);
-
+  const ref = useRef(null);
   useScrollToTop(ref);
 
   return (
     <View style={styles.container}>
       <StatusBar barStyle='dark-content' backgroundColor='lavender' />
-      <SafeAreaView>
-        <FlatList
-          ref={ref}
-          data={data}
-          initialNumToRender={3}
-          refreshing={isLoading}
-          onRefresh={_handleRefresh}
-          keyExtractor={item => item.id.toString()}
-          showsVerticalScrollIndicator={false}
-          renderItem={({ item }) => <PaintingItem navigation={navigation} item={item} />}
-        />
-      </SafeAreaView>
+      <FlatList
+        ref={ref}
+        data={data}
+        initialNumToRender={3}
+        refreshing={isLoading}
+        onRefresh={handleRefresh}
+        keyExtractor={item => item.id.toString()}
+        showsVerticalScrollIndicator={false}
+        renderItem={({ item }) => <PaintingListItem item={item} />}
+      />
     </View>
   );
 };
