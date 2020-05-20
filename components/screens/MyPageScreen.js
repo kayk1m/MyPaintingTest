@@ -1,10 +1,6 @@
 import React, { useState, useEffect, useContext, useRef } from 'react';
 
-import {
-  StyleSheet,
-  View,
-  FlatList
-} from 'react-native';
+import { StyleSheet, View, FlatList } from 'react-native';
 
 import { Text, Header } from 'react-native-elements';
 import { useScrollToTop } from '@react-navigation/native';

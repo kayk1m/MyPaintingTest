@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { View } from 'react-native';
-import { Text, Button, Image } from 'react-native-elements';
+import { Text, Button, Avatar } from 'react-native-elements';
 
 import { SCREEN_WIDTH, STORAGE_URL } from './defines';
 
@@ -34,9 +34,12 @@ const ProfileHeader = ({ user }) => {
   return (
     <View>
       <View style={{ flexDirection: 'row', padding: 20 }}>
-        <Image
+        <Avatar
+          rounded
+          activeOpacity={0.8}
+          size='xlarge'
           source={{ uri: `${STORAGE_URL}/profile/${user.profile_pic_src}` }}
-          style={{ width: PROFILE_IMAGE_SIZE, height: PROFILE_IMAGE_SIZE, borderRadius: PROFILE_IMAGE_SIZE/2}}
+          onPress={() => console.log(`NEED WORK!!!!`)}
         />
         <FanItem numFans={user.num_fans} />
       </View>
