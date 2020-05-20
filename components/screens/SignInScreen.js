@@ -34,16 +34,21 @@ const SignInScreen = ({ navigation }) => {
       <StatusBar barStyle='dark-content' backgroundColor='lavender' />
       <SafeAreaView>
         <View>
+          <Text>email</Text>
           <TextInput
+            style={styles.textInput}
             placeholder="e-mail"
             value={email}
             onChangeText={setEmail}
+            secureTextEntry={false}
           />
+          <Text>password</Text>
           <TextInput
+            style={styles.textInput}
             placeholder="password"
             value={password}
             onChangeText={setPassword}
-            secureTextEntry
+            secureTextEntry={true}
           />
           <View style={styles.spacing} />
           <Button title='Sign in' onPress={() => callSignIn()} />
@@ -65,6 +70,9 @@ const styles = StyleSheet.create({
   spacing: {
     margin: 10,
     flex: 1,
+  },
+  textInput: {
+    borderWidth: 1
   }
 });
 
