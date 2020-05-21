@@ -5,7 +5,7 @@ import { Text } from 'react-native-elements';
 const LoadingScreen = () => {
   return (
     <View style={styles.container}>
-      <Text>Now Loading...</Text>
+      <Text h3>Now Loading...</Text>
     </View>
   );
 };
