@@ -26,7 +26,7 @@ import LoadingScreen from './components/screens/LoadingScreen';
 
 import { restoreToken } from './utils';
 
-import { SERVER_URL, ERROR_CODE } from './components/defines';
+import { SERVER_URL, ERROR_CODE } from './defines';
 
 import AuthContext from './AuthContext';
 

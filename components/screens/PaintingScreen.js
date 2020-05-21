@@ -5,14 +5,14 @@ import { useScrollToTop } from '@react-navigation/native';
 import PaintingListItem from '../PaintingListItem';
 import AuthContext from '../../AuthContext';
 
-import { SERVER_URL } from '../defines';
+import { SERVER_URL, ERROR_CODE } from '../../defines';
 
 const PaintingScreen = ({ navigation }) => {
   const [isLoading, setLoading] = useState(true);
   const [data, setData] = useState([]);
   const [error, setError] = useState(null);
 
-  const { accessToken } = useContext(AuthContext);
+  const { accessToken, restoreToken } = useContext(AuthContext);
 
   useEffect(() => {
     fetchData();

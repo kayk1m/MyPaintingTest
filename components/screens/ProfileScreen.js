@@ -9,7 +9,7 @@ import AuthContext from '../../AuthContext';
 import ProfileHeader from '../ProfileHeader';
 import TouchablePainting from '../TouchablePainting';
 
-import {SERVER_URL} from '../defines';
+import { SERVER_URL, ERROR_CODE } from '../../defines';
 
 const ProfileScreen = ({route, navigation}) => {
   const [user, setUser] = userState(null);

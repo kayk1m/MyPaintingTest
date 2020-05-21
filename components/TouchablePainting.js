@@ -4,7 +4,7 @@ import { TouchableWithoutFeedback } from 'react-native';
 import { Image } from 'react-native-elements';
 import { useNavigation } from '@react-navigation/native';
 
-import { STORAGE_URL, SCREEN_WIDTH } from './defines';
+import { STORAGE_URL, SCREEN_WIDTH } from '../defines';
 
 const TouchablePainting = ({ item }) => {
   const navigation = useNavigation();

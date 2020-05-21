@@ -5,7 +5,7 @@ import { Text } from 'react-native-elements';
 import PaintingListItem from '../PaintingListItem';
 import AuthContext from '../../AuthContext';
 
-import { SERVER_URL } from '../defines';
+import { SERVER_URL, ERROR_CODE } from '../../defines';
 
 const PaintingScreen = ({ route, navigation }) => {
   const { painting_id, painting_name } = route.params;

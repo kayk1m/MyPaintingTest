@@ -3,7 +3,7 @@ import React from 'react';
 import { View } from 'react-native';
 import { Text, Button, Avatar } from 'react-native-elements';
 
-import { SCREEN_WIDTH, STORAGE_URL } from './defines';
+import { SCREEN_WIDTH, STORAGE_URL } from '../defines';
 
 const PROFILE_IMAGE_SIZE = SCREEN_WIDTH/3.5;
 

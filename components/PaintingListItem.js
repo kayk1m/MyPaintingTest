@@ -9,7 +9,7 @@ import { useNavigation } from '@react-navigation/native';
 
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
-import { SCREEN_WIDTH, SERVER_URL, STORAGE_URL } from './defines';
+import { SCREEN_WIDTH, SERVER_URL, STORAGE_URL } from '../defines';
 import AuthContext from '../AuthContext';
 const iconSize = 20;
 
