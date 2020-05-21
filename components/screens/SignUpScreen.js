@@ -6,15 +6,17 @@ import { sha256 } from 'react-native-sha256';
 
 import AuthContext from '../../AuthContext';
 import { signUp } from '../../utils';
+import { Spacing } from '../utils_components';
 
 import { ERROR_CODE } from '../../defines';
 
 const SignUpScreen = ({ navigation }) => {
-  const [username, setUsername] = useState('');
-  const [name, setName] = useState('');
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const [username, setUsername] = useState(null);
+  const [name, setName] = useState(null);
+  const [email, setEmail] = useState(null);
+  const [password, setPassword] = useState(null);
   const [gender, setGender] = useState(false);
+  const [error, setError] = useState(null);
 
   const { setAccessToken, setLoggedIn } = useContext(AuthContext);
 
@@ -23,19 +25,22 @@ const SignUpScreen = ({ navigation }) => {
   };
 
   const handleSignUp = async () => {
+    if (!(username && name && email && password && gender)) {
+      return await setError('PLEASE FILL ALL BLANKS');
+    };
     try {
       const hashed = await hashPassword(password);
       const token = await signUp(username, name, email, hashed, gender);
       if (token.error) {
         switch ( token.error ) {
           case ERROR_CODE.USERNAME_ALREADY_OCCUPIED:
-            console.log(`SIGNUP_FAILED: USERNAME_ALREADY_OCCUPIED`);
+            setError(`SIGNUP_FAILED: USERNAME_ALREADY_OCCUPIED`);
             break;
           case ERROR_CODE.EMAIL_ALREADY_OCCUPIED:
-            console.log(`SIGNUP_FAILED: EMAIL_ALREADY_OCCUPIED`);
+            setError(`SIGNUP_FAILED: EMAIL_ALREADY_OCCUPIED`);
             break;
           default:
-            console.log(`SIGNUP_FAILED: ${token}`);
+            setError(`SIGNUP_FAILED: ${token}`);
         }
       } else {
         setAccessToken(token);
@@ -50,24 +55,28 @@ const SignUpScreen = ({ navigation }) => {
     <View style={styles.container}>
       <Text>username</Text>
       <Input
+        placeholder="username"
         style={styles.textInput}
         value={username}
         onChangeText={setUsername}
       />
       <Text>name</Text>
       <Input
+        placeholder="name"
         style={styles.textInput}
         value={name}
         onChangeText={setName}
       />
       <Text>e-mail</Text>
       <Input
+        placeholder="e-mail"
         style={styles.textInput}
         value={email}
         onChangeText={setEmail}
       />
       <Text>password</Text>
       <Input
+        placeholder="password"
         style={styles.textInput}
         value={password}
         onChangeText={setPassword}
@@ -82,8 +91,10 @@ const SignUpScreen = ({ navigation }) => {
         <Picker.Item label='여성' value={false} />
         <Picker.Item label='남성' value={true} />
       </Picker>
-      <View style={styles.spacing} />
+      <Spacing height={20} />
       <Button title='Sign Up' onPress={() => handleSignUp()} />
+      <Spacing height={20} />
+      <Text h4>{error}</Text>
     </View>
   );
 };

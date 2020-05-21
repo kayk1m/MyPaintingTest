@@ -5,12 +5,14 @@ import { sha256 } from 'react-native-sha256';
 
 import AuthContext from '../../AuthContext';
 import { signIn } from '../../utils';
+import { Spacing } from '../utils_components';
 
 import { ERROR_CODE } from '../../defines';
 
 const SignInScreen = ({ navigation }) => {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const [email, setEmail] = useState(null);
+  const [password, setPassword] = useState(null);
+  const [error, setError] = useState(null)
 
   const { setAccessToken, setLoggedIn } = useContext(AuthContext);
 
@@ -19,19 +21,22 @@ const SignInScreen = ({ navigation }) => {
   };
 
   const handleSignIn = async () => {
+    if (!(email && password)) {
+      return await setError('PLEASE FILL ALLL BLANKS');
+    }
     try {
       const hashed = await hashPassword(password);
       const token = await signIn(email, hashed);
       if (token.error) {
         switch ( token.error ) {
           case ERROR_CODE.NO_SUCH_USER:
-            console.log(`LOGIN_FAILED: NO_SUCH_USER`);
+            setError(`LOGIN_FAILED: NO_SUCH_USER`);
             break;
           case ERROR_CODE.PASSWORD_WRONG:
-            console.log(`LOGIN_FAILED: PASSWORD_WRONG`);
+            setError(`LOGIN_FAILED: PASSWORD_WRONG`);
             break;
           default:
-            console.log(`LOGIN_FAILED: ${token}`);
+            setError(`LOGIN_FAILED: ${token}`);
         }
       } else {
         setAccessToken(token);
@@ -58,10 +63,12 @@ const SignInScreen = ({ navigation }) => {
         onChangeText={setPassword}
         secureTextEntry={true}
       />
-      <View style={styles.spacing} />
+      <Spacing height={20} />
       <Button title='Sign in' onPress={() => handleSignIn()} />
-      <View style={styles.spacing} />
+      <Spacing height={20} />
       <Button title='Sign Up' onPress={() => navigation.navigate('SignUp')} />
+      <Spacing height={20} />
+      <Text h4>{error}</Text>
     </View>
   );
 };
@@ -72,9 +79,6 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     backgroundColor: 'lavender',
-  },
-  spacing: {
-    height: 20,
   }
 });
 

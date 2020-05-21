@@ -41,7 +41,6 @@ const PaintingScreen = ({ navigation }) => {
           console.log(`PAINTING SCREEN ERROR: ${JSON.stringify(resJson)}`);
         };
       } else {
-        console.log(`${JSON.stringify(resJson.paintings)}`);
         setPaintings(resJson.paintings);
       };
     } catch (e) {
