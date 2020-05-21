@@ -1,6 +1,6 @@
 import AsyncStorage from '@react-native-community/async-storage';
 
-import { SERVER_URL, ERROR_CODE } from './components/defines';
+import { SERVER_URL, ERROR_CODE } from './defines';
 
 const signIn = async (email, password) => {
   try {
