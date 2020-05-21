@@ -6,6 +6,8 @@ import { sha256 } from 'react-native-sha256';
 import AuthContext from '../../AuthContext';
 import { signIn } from '../../utils';
 
+import { ERROR_CODE } from '../../defines';
+
 const SignInScreen = ({ navigation }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -21,7 +23,16 @@ const SignInScreen = ({ navigation }) => {
       const hashed = await hashPassword(password);
       const token = await signIn(email, hashed);
       if (token.error) {
-        console.log(`LOGIN FAILED: ${token}`);
+        switch ( token.error ) {
+          case ERROR_CODE.NO_SUCH_USER:
+            console.log(`LOGIN_FAILED: NO_SUCH_USER`);
+            break;
+          case ERROR_CODE.PASSWORD_WRONG:
+            console.log(`LOGIN_FAILED: PASSWORD_WRONG`);
+            break;
+          default:
+            console.log(`LOGIN_FAILED: ${token}`);
+        }
       } else {
         setAccessToken(token);
         setLoggedIn(true);

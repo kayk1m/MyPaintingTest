@@ -7,6 +7,8 @@ import { sha256 } from 'react-native-sha256';
 import AuthContext from '../../AuthContext';
 import { signUp } from '../../utils';
 
+import { ERROR_CODE } from '../../defines';
+
 const SignUpScreen = ({ navigation }) => {
   const [username, setUsername] = useState('');
   const [name, setName] = useState('');
@@ -25,7 +27,16 @@ const SignUpScreen = ({ navigation }) => {
       const hashed = await hashPassword(password);
       const token = await signUp(username, name, email, hashed, gender);
       if (token.error) {
-        console.log(`SIGNUP FAILED: ${token}`);
+        switch ( token.error ) {
+          case ERROR_CODE.USERNAME_ALREADY_OCCUPIED:
+            console.log(`SIGNUP_FAILED: USERNAME_ALREADY_OCCUPIED`);
+            break;
+          case ERROR_CODE.EMAIL_ALREADY_OCCUPIED:
+            console.log(`SIGNUP_FAILED: EMAIL_ALREADY_OCCUPIED`);
+            break;
+          default:
+            console.log(`SIGNUP_FAILED: ${token}`);
+        }
       } else {
         setAccessToken(token);
         setLoggedIn(true);
