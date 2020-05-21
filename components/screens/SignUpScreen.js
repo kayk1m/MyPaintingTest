@@ -5,6 +5,7 @@ import { Picker } from '@react-native-community/picker';
 import { sha256 } from 'react-native-sha256';
 
 import AuthContext from '../../AuthContext';
+import { signUp } from '../../utils';
 
 const SignUpScreen = ({ navigation }) => {
   const [username, setUsername] = useState('');
@@ -13,16 +14,26 @@ const SignUpScreen = ({ navigation }) => {
   const [password, setPassword] = useState('');
   const [gender, setGender] = useState(false);
 
-  const { signUp } = useContext(AuthContext);
+  const { setAccessToken, setLoggedIn } = useContext(AuthContext);
 
   const hashPassword = async (input) => {
     return await sha256(input);
   };
 
-  const callSingUp = async () => {
-    const hashed = await hashPassword(password);
-    signUp(username, name, email, hashed, gender);
-  }
+  const handleSignUp = async () => {
+    try {
+      const hashed = await hashPassword(password);
+      const token = await signUp(username, name, email, hashed, gender);
+      if (token.error) {
+        console.log(`SIGNUP FAILED: ${token}`);
+      } else {
+        setAccessToken(token);
+        setLoggedIn(true);
+      };
+    } catch (e) {
+      console.error(e);
+    };
+  };
 
   return (
     <View style={styles.container}>
@@ -61,7 +72,7 @@ const SignUpScreen = ({ navigation }) => {
         <Picker.Item label='남성' value={true} />
       </Picker>
       <View style={styles.spacing} />
-      <Button title='Sign Up' onPress={() => callSingUp()} />
+      <Button title='Sign Up' onPress={() => handleSignUp()} />
     </View>
   );
 };

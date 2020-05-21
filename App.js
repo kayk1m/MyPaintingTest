@@ -24,7 +24,9 @@ import SignInScreen from './components/screens/SignInScreen';
 import SignUpScreen from './components/screens/SignUpScreen';
 import LoadingScreen from './components/screens/LoadingScreen';
 
-import { SERVER_URL } from './components/defines';
+import { restoreToken } from './utils';
+
+import { SERVER_URL, ERROR_CODE } from './components/defines';
 
 import AuthContext from './AuthContext';
 
@@ -61,66 +63,21 @@ const MyPageStack = () => {
 
 const App = () => {
   const [accessToken, setAccessToken] = React.useState(null);
-  const [refreshToken, setRefreshToken] = React.useState(null);
   const [isLoading, setLoading] = React.useState(true);
   const [isLoggedIn, setLoggedIn] = React.useState(false);
 
   React.useEffect(() => {
     console.log(`useEffect Called!`);
-    restoreToken();
+    getTokens();
   }, []);
 
-  const storeToken = async (access_token, refresh_token) => {
+  const getTokens = async () => {
     try {
-      await AsyncStorage.setItem('@refresh_token', JSON.stringify(refresh_token));
-      await AsyncStorage.setItem('@access_token', JSON.stringify(access_token));
-      console.log(`REFRESH_TOKEN STORED: ${refresh_token}`);
-      console.log(`ACCESS_TOKEN STORED: ${access_token}`);
-    } catch (e) {
-      throw new Error(`TOKEN STORING FAILED: ${e}`);
-    };
-  };
-
-  const restoreToken = async () => {
-    try {
-      const refresh_token = JSON.parse(await AsyncStorage.getItem('@refresh_token'));
-      const access_token = JSON.parse(await AsyncStorage.getItem('@access_token'));
-
-      console.log(`REFRESH_TOKEN RESTORED: ${refresh_token}`);
-      console.log(`ACCESS_TOKEN RESTORED: ${access_token}`);
-
-      if (refresh_token && access_token) {
-        getAccessToken(refresh_token, access_token);
-      } else {
-        setLoading(false);
-      }
-    } catch (e) {
-      throw new Error(`No Token (Token Retoring Failed): ${e}`);
-    };
-  };
-
-  const getAccessToken = async (refresh_token, access_token) => {
-    try {
-      const response = await fetch(`${SERVER_URL}/auth/token`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': access_token
-        },
-        body: JSON.stringify({ refresh_token })
-      });
-
-      const resJson = await response.json();
-      if (!response.ok) {
-        console.log(`GET ACCESS_TOKEN ERROR: ${JSON.stringify(resJson)}`);
-        // need handling failure
-      } else {
-        setAccessToken(resJson.token);
-        setRefreshToken(refresh_token);
-        storeToken(resJson.token, refresh_token);
-        console.log(`ACCESS_TOKEN RECIEVED: ${resJson.token}`);
+      const token = await restoreToken();
+      if (token != null) {
+        setAccessToken(token);
         setLoggedIn(true);
-      };
+      }
     } catch (e) {
       throw new Error(`ERROR: ${e}`);
     } finally {
@@ -128,79 +85,25 @@ const App = () => {
     };
   };
 
-  const signIn = async (email, password) => {
+  const handleSignOut = async () => {
     try {
-      const response = await fetch(`${SERVER_URL}/auth/login`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ email, password })
-      });
-
-      const resJson = await response.json();
-      if (!response.ok) {
-        console.log(`SIGN IN ERROR: ${JSON.stringify(resJson)}`);
-        // need handling failure
-      } else {
-        setAccessToken(resJson.token);
-        setRefreshToken(resJson.refresh_token);
-        storeToken(resJson.token, resJson.refresh_token);
-        console.log(`SIGN IN SUCESS`);
-        setLoggedIn(true);
-      }
+      await signOut();
+      setLoggedIn(false);
     } catch (e) {
       throw new Error(`ERROR: ${e}`);
     };
-  };
-
-  const signUp = async (username, name, email, password, gender) => {
-    try {
-      const response = await fetch(`${SERVER_URL}/auth/join`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ username, name, email, password, gender })
-      });
-
-      const resJson = await response.json();
-      if (!response.ok) {
-        console.log(`SIGN UP ERROR: ${JSON.stringify(resJson)}`);
-        // need handling failure
-      } else {
-        setAccessToken(resJson.token);
-        setRefreshToken(resJson.refresh_token);
-        storeToken(resJson.token, resJson.refresh_token);
-        console.log(`SIGN IN SUCESS`);
-        setLoggedIn(true);
-      }
-    } catch (e) {
-      throw new Error(`ERROR: ${e}`);
-    };
-  };
-
-  const removeStoredToken = async (key) => {
-    try {
-      await AsyncStorage.removeItem(key);
-      console.log(`REMOVED STORED TOKEN WITH KEY: ${key}`);
-      return true;
-    } catch (e) {
-      return false;
-    };
-  };
-
-  const signOut = () => {
-    removeStoredToken('@refresh_token');
-    removeStoredToken('@access_token');
-    setLoggedIn(false);
   };
 
   if (isLoading) {
     return <LoadingScreen />;
   };
   return (
-    <AuthContext.Provider value={{ accessToken, signIn, signUp, signOut }}>
+    <AuthContext.Provider
+      value={{
+        accessToken,
+        setAccessToken,
+        setLoggedIn
+      }}>
       <NavigationContainer>
         {!isLoggedIn ? (
           <Stack.Navigator headerMode='none'>

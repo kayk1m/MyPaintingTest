@@ -4,20 +4,31 @@ import { Text, Button, Input } from 'react-native-elements';
 import { sha256 } from 'react-native-sha256';
 
 import AuthContext from '../../AuthContext';
+import { signIn } from '../../utils';
 
 const SignInScreen = ({ navigation }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
-  const { signIn } = useContext(AuthContext);
+  const { setAccessToken, setLoggedIn } = useContext(AuthContext);
 
   const hashPassword = async (input) => {
     return await sha256(input);
   };
 
-  const callSignIn = async () => {
-    const hashed = await hashPassword(password);
-    signIn(email, hashed);
+  const handleSignIn = async () => {
+    try {
+      const hashed = await hashPassword(password);
+      const token = await signIn(email, hashed);
+      if (token.error) {
+        console.log(`LOGIN FAILED: ${token}`);
+      } else {
+        setAccessToken(token);
+        setLoggedIn(true);
+      };
+    } catch (e) {
+      console.error(e);
+    };
   };
 
   return (
@@ -37,7 +48,7 @@ const SignInScreen = ({ navigation }) => {
         secureTextEntry={true}
       />
       <View style={styles.spacing} />
-      <Button title='Sign in' onPress={() => callSignIn()} />
+      <Button title='Sign in' onPress={() => handleSignIn()} />
       <View style={styles.spacing} />
       <Button title='Sign Up' onPress={() => navigation.navigate('SignUp')} />
     </View>

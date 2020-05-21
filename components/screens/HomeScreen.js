@@ -4,9 +4,15 @@ import { Text, Button } from 'react-native-elements';
 
 import AuthContext from '../../AuthContext';
 import { Spacing } from '../utils_components';
+import { signOut } from '../../utils';
 
 const HomeScreen = ({ navigation }) => {
-  const { accessToken, signOut } = useContext(AuthContext);
+  const { accessToken, setLoggedIn } = useContext(AuthContext);
+
+  const handleSignOut = async () => {
+    await signOut();
+    setLoggedIn(false);
+  }
 
   return (
     <View style={styles.container}>
@@ -16,7 +22,7 @@ const HomeScreen = ({ navigation }) => {
       <Spacing height={30} />
       <Button
         title="Sign Out"
-        onPress={signOut}
+        onPress={() => handleSignOut()}
       />
     </View>
   );
