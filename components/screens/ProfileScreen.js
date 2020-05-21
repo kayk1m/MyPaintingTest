@@ -1,22 +1,21 @@
 import React, { useEffect, useState, useContext } from 'react';
-
 import { FlatList, StyleSheet, View, TouchableWithoutFeedback } from 'react-native';
-
 import { Text, Image, Button } from 'react-native-elements';
-
 import { useScrollToTop } from '@react-navigation/native';
+
 import AuthContext from '../../AuthContext';
 import ProfileHeader from '../ProfileHeader';
 import TouchablePainting from '../TouchablePainting';
+import { getAccessToken } from '../../utils';
 
 import { SERVER_URL, ERROR_CODE } from '../../defines';
 
 const ProfileScreen = ({route, navigation}) => {
-  const [user, setUser] = userState(null);
+  const [user, setUser] = useState(null);
   const [paintings, setPaintings] = useState([]);
   const [isLoading, setLoading] = useState(true);
 
-  const { accessToken } = useContext(AuthContext);
+  const { accessToken, setAccessToken } = useContext(AuthContext);
 
   useEffect(() => {
     fetchData();
@@ -33,8 +32,16 @@ const ProfileScreen = ({route, navigation}) => {
       });
       const resJson = await response.json();
       if (!response.ok) {
-        console.log(`GET USER INFO WITH PAINTINGS ERROR: ${JSON.stringify(resJson)}`);
-        // need handling failure
+        if (resJson.error == ERROR_CODE.TOKEN_EXPIRED) {
+          try {
+            await setAccessToken(await getAccessToken(accessToken));
+            fetchData();
+          } catch (e) {
+            throw new Error(`ERROR: ${e}`);
+          };
+        } else {
+          console.log(`GET USER INFO WITH PAINTINGS ERROR: ${JSON.stringify(resJson)}`);
+        };
       } else {
         setUser(resJson.user);
         setPaintings(resJson.paintings);
@@ -74,9 +81,7 @@ const ProfileScreen = ({route, navigation}) => {
 
 const styles = StyleSheet.create({
   container: {
-    paddingTop: 10,
     flex: 1,
-    justifyContent: 'center',
     backgroundColor: 'lavender'
   }
 });

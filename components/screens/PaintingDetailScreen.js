@@ -4,6 +4,7 @@ import { Text } from 'react-native-elements';
 
 import PaintingListItem from '../PaintingListItem';
 import AuthContext from '../../AuthContext';
+import { getAccessToken } from '../../utils';
 
 import { SERVER_URL, ERROR_CODE } from '../../defines';
 
@@ -13,7 +14,7 @@ const PaintingScreen = ({ route, navigation }) => {
   const [products, setProducts] = useState([]);
   const [isLoading, setLoading] = useState(true);
 
-  const { accessToken } = useContext(AuthContext);
+  const { accessToken, setAccessToken } = useContext(AuthContext);
   // post server to fetch detailed Info using painting_id
   useEffect(() => {
     fetchData();
@@ -30,8 +31,16 @@ const PaintingScreen = ({ route, navigation }) => {
       });
       const resJson = await response.json();
       if (!response.ok) {
-        console.log(`GET PAINTING INFO WITH PRODUCTS ERROR: ${JSON.stringify(resJson)}`);
-        // need handling failure
+        if (resJson.error == ERROR_CODE.TOKEN_EXPIRED) {
+          try {
+            await setAccessToken(await getAccessToken(accessToken));
+            fetchData();
+          } catch (e) {
+            throw new Error(`ERROR: ${e}`);
+          };
+        } else {
+          console.log(`GET PAINTING INFO WITH PRODUCTS ERROR: ${JSON.stringify(resJson)}`);
+        };
       } else {
         setPainting(resJson.painting);
         setProducts(resJson.products);
@@ -58,10 +67,7 @@ const PaintingScreen = ({ route, navigation }) => {
 
 const styles = StyleSheet.create({
   container: {
-    paddingTop: 20,
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
     backgroundColor: 'lavender',
   }
 });

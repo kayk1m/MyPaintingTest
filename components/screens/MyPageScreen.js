@@ -1,20 +1,21 @@
 import React, { useState, useEffect, useContext, useRef } from 'react';
 import { StyleSheet, View, FlatList } from 'react-native';
-import { Text, Header } from 'react-native-elements';
+import { Text } from 'react-native-elements';
 import { useScrollToTop } from '@react-navigation/native';
 
 import AuthContext from '../../AuthContext';
 import ProfileHeader from '../ProfileHeader';
 import TouchablePainting from '../TouchablePainting';
+import { getAccessToken } from '../../utils';
 
-import { SERVER_URL } from '../defines';
+import { SERVER_URL, ERROR_CODE } from '../../defines';
 
 const MyPageScreen = ({ navigation }) => {
   const [user, setUser] = useState(null);
   const [paintings, setPaintings] = useState([]);
   const [isLoading, setLoading] = useState(true);
 
-  const { accessToken } = useContext(AuthContext);
+  const { accessToken, setAccessToken } = useContext(AuthContext);
 
   useEffect(() => {
     fetchData();
@@ -31,8 +32,16 @@ const MyPageScreen = ({ navigation }) => {
       });
       const resJson = await response.json();
       if (!response.ok) {
-        console.log(`GET MY INFO ERROR: ${JSON.stringify(resJson)}`);
-        // need handling failure
+        if (resJson.error == ERROR_CODE.TOKEN_EXPIRED) {
+          try {
+            await setAccessToken(await getAccessToken(accessToken));
+            fetchData();
+          } catch (e) {
+            throw new Error(`ERROR: ${e}`);
+          };
+        } else {
+          console.log(`GET MY INFO ERROR: ${JSON.stringify(resJson)}`);
+        };
       } else {
         setUser(resJson.user);
         setPaintings(resJson.paintings);
@@ -55,7 +64,6 @@ const MyPageScreen = ({ navigation }) => {
 
   return (
     <View style={styles.container}>
-      <Header />
       {isLoading
         ? (
           <Text h2>Loading...</Text>
