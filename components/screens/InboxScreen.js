@@ -1,20 +1,12 @@
 import React from 'react';
 
-import {
-  SafeAreaView,
-  StyleSheet,
-  View,
-  Text,
-  StatusBar,
-} from 'react-native';
+import { StyleSheet, View, Text } from 'react-native';
 
 const InboxScreen = ({ navigation }) => {
   return (
     <View style={styles.container}>
       <StatusBar barStyle='dark-content' backgroundColor='lavender' />
-      <SafeAreaView>
-        <Text style={styles.textHelloWorld}>Inbox Page!</Text>
-      </SafeAreaView>
+      <Text style={styles.textHelloWorld}>Inbox Page!</Text>
     </View>
   );
 };

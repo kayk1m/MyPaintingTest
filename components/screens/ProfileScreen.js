@@ -57,17 +57,19 @@ const ProfileScreen = ({route, navigation}) => {
   const ref = React.useRef(null);
   useScrollToTop(ref);
 
-  return (<View style={styles.container}>
-    {
-      isLoading
-        ? (<Text h2="h2">Loading ...
-        </Text>)
-        : (<View>
-          <ProfileHeader user={user}/>
-          <FlatList ref={ref} data={paintings} refreshing={isLoading} onRefresh={handleRefresh} keyExtractor={item => item.id.toString()} showsVerticalScrollIndicator={false} renderItem={({item}) => <TouchablePainting item={item}/>} numColumns={3}/>
-        </View>)
-    }
-  </View>);
+  return (
+    <View style={styles.container}>
+      {isLoading
+        ? (
+          <Text h2="h2">Loading ...</Text>
+        ) : (
+          <View>
+            <ProfileHeader user={user}/>
+            <FlatList ref={ref} data={paintings} refreshing={isLoading} onRefresh={handleRefresh} keyExtractor={item => item.id.toString()} showsVerticalScrollIndicator={false} renderItem={({item}) => <TouchablePainting item={item}/>} numColumns={3}/>
+          </View>
+        )}
+    </View>
+  );
 };
 
 const styles = StyleSheet.create({

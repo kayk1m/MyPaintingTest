@@ -1,18 +1,6 @@
 import React, { useState, useEffect } from 'react';
 
-import {
-  Dimensions,
-  SafeAreaView,
-  StyleSheet,
-  View,
-  Text,
-  StatusBar,
-  TouchableWithoutFeedback
-} from 'react-native';
-
-const { width, height } = Dimensions.get('window');
-const SCREEN_WIDTH = width < height ? width : height;
-const serverURL = 'http://jeonghyunkay.ipdisk.co.kr:8000/list/HDD2/Kay/';
+import { StyleSheet, View } from 'react-native';
 
 const PaintingScreen = ({ route, navigation }) => {
   const [data, setData] = useState([]);
@@ -21,9 +9,6 @@ const PaintingScreen = ({ route, navigation }) => {
 
   return (
     <View style={styles.container}>
-      <StatusBar barStyle='dark-content' backgroundColor='lavender' />
-      <SafeAreaView>
-      </SafeAreaView>
     </View>
   );
 };

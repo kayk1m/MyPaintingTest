@@ -1,12 +1,6 @@
 import React, { useState, useEffect, useContext, useRef } from 'react';
 
-import {
-  SafeAreaView,
-  StyleSheet,
-  View,
-  StatusBar,
-  FlatList
-} from 'react-native';
+import { StyleSheet, View, FlatList } from 'react-native';
 
 import { useScrollToTop } from '@react-navigation/native';
 
@@ -59,7 +53,6 @@ const PaintingScreen = ({ navigation }) => {
 
   return (
     <View style={styles.container}>
-      <StatusBar barStyle='dark-content' backgroundColor='lavender' />
       <FlatList
         ref={ref}
         data={data}

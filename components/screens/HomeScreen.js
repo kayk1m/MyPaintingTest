@@ -1,13 +1,6 @@
 import React, { useContext } from 'react';
 
-import {
-  SafeAreaView,
-  StyleSheet,
-  View,
-  Text,
-  StatusBar,
-  Button
-} from 'react-native';
+import { StyleSheet, View, Text, Button } from 'react-native';
 
 import AuthContext from '../../AuthContext';
 
@@ -16,14 +9,11 @@ const HomeScreen = ({ navigation }) => {
 
   return (
     <View style={styles.container}>
-      <StatusBar barStyle='dark-content' backgroundColor='lavender' />
-      <SafeAreaView>
-        <Text>{accessToken}</Text>
-        <Button
-          title="Sign Out"
-          onPress={signOut}
-        />
-      </SafeAreaView>
+      <Text>{accessToken}</Text>
+      <Button
+        title="Sign Out"
+        onPress={signOut}
+      />
     </View>
   );
 }

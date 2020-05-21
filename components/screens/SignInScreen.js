@@ -1,10 +1,6 @@
 import React, { useState, useContext } from 'react';
 
-import {
-  StyleSheet,
-  View,
-  StatusBar
-} from 'react-native';
+import { StyleSheet, View } from 'react-native';
 
 import { Text, Button, Input } from 'react-native-elements';
 
@@ -29,27 +25,24 @@ const SignInScreen = ({ navigation }) => {
 
   return (
     <View style={styles.container}>
-      <StatusBar barStyle='dark-content' backgroundColor='lavender' />
-      <View>
-        <Text>email</Text>
-        <Input
-          placeholder="e-mail"
-          value={email}
-          onChangeText={setEmail}
-          secureTextEntry={false}
-        />
-        <Text>password</Text>
-        <Input
-          placeholder="password"
-          value={password}
-          onChangeText={setPassword}
-          secureTextEntry={true}
-        />
-        <View style={styles.spacing} />
-        <Button title='Sign in' onPress={() => callSignIn()} />
-        <View style={styles.spacing} />
-        <Button title='Sign Up' onPress={() => navigation.navigate('SignUp')} />
-      </View>
+      <Text>email</Text>
+      <Input
+        placeholder="e-mail"
+        value={email}
+        onChangeText={setEmail}
+        secureTextEntry={false}
+      />
+      <Text>password</Text>
+      <Input
+        placeholder="password"
+        value={password}
+        onChangeText={setPassword}
+        secureTextEntry={true}
+      />
+      <View style={styles.spacing} />
+      <Button title='Sign in' onPress={() => callSignIn()} />
+      <View style={styles.spacing} />
+      <Button title='Sign Up' onPress={() => navigation.navigate('SignUp')} />
     </View>
   );
 };

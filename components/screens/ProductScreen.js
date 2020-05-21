@@ -1,20 +1,11 @@
 import React from 'react';
 
-import {
-  SafeAreaView,
-  StyleSheet,
-  View,
-  Text,
-  StatusBar,
-} from 'react-native';
+import { StyleSheet, View, Text } from 'react-native';
 
 const ProductScreen = ({ navigation }) => {
   return (
     <View style={styles.container}>
-      <StatusBar barStyle='dark-content' backgroundColor='lavender' />
-      <SafeAreaView>
-        <Text style={styles.textHelloWorld}>Palette Page!</Text>
-      </SafeAreaView>
+      <Text style={styles.textHelloWorld}>Palette Page!</Text>
     </View>
   );
 };

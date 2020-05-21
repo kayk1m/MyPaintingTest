@@ -1,10 +1,6 @@
 import React, { useState, useContext } from 'react';
 
-import {
-  View,
-  StyleSheet,
-  StatusBar
-} from 'react-native';
+import { View, StyleSheet } from 'react-native';
 
 import { Text, Input, Button } from 'react-native-elements';
 
@@ -34,45 +30,42 @@ const SignUpScreen = ({ navigation }) => {
 
   return (
     <View style={styles.container}>
-      <StatusBar barStyle='dark-content' backgroundColor='lavender' />
-      <View>
-        <Text>username</Text>
-        <Input
-          style={styles.textInput}
-          value={username}
-          onChangeText={setUsername}
-        />
-        <Text>name</Text>
-        <Input
-          style={styles.textInput}
-          value={name}
-          onChangeText={setName}
-        />
-        <Text>e-mail</Text>
-        <Input
-          style={styles.textInput}
-          value={email}
-          onChangeText={setEmail}
-        />
-        <Text>password</Text>
-        <Input
-          style={styles.textInput}
-          value={password}
-          onChangeText={setPassword}
-          secureTextEntry
-        />
-        <Text>gender</Text>
-        <Picker
-          selectedValue={gender}
-          onValueChange={(itemValue, itemIndex) =>
-            setGender(itemValue)
-          }>
-          <Picker.Item label='여성' value={false} />
-          <Picker.Item label='남성' value={true} />
-        </Picker>
-        <View style={styles.spacing} />
-        <Button title='Sign Up' onPress={() => callSingUp()} />
-      </View>
+      <Text>username</Text>
+      <Input
+        style={styles.textInput}
+        value={username}
+        onChangeText={setUsername}
+      />
+      <Text>name</Text>
+      <Input
+        style={styles.textInput}
+        value={name}
+        onChangeText={setName}
+      />
+      <Text>e-mail</Text>
+      <Input
+        style={styles.textInput}
+        value={email}
+        onChangeText={setEmail}
+      />
+      <Text>password</Text>
+      <Input
+        style={styles.textInput}
+        value={password}
+        onChangeText={setPassword}
+        secureTextEntry
+      />
+      <Text>gender</Text>
+      <Picker
+        selectedValue={gender}
+        onValueChange={(itemValue, itemIndex) =>
+          setGender(itemValue)
+        }>
+        <Picker.Item label='여성' value={false} />
+        <Picker.Item label='남성' value={true} />
+      </Picker>
+      <View style={styles.spacing} />
+      <Button title='Sign Up' onPress={() => callSingUp()} />
     </View>
   );
 };
