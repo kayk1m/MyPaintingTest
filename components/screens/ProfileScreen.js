@@ -16,7 +16,7 @@ const ProfileScreen = ({route, navigation}) => {
   const [paintings, setPaintings] = useState([]);
   const [isLoading, setLoading] = useState(true);
 
-  const { userToken } = useContext(AuthContext);
+  const { accessToken } = useContext(AuthContext);
 
   useEffect(() => {
     fetchData();
@@ -33,7 +33,7 @@ const ProfileScreen = ({route, navigation}) => {
       });
       const resJson = await response.json();
       if (!response.ok) {
-        console.log(`GET INFO WITH PAINTINGS ERROR: ${JSON.stringify(resJson)}`);
+        console.log(`GET USER INFO WITH PAINTINGS ERROR: ${JSON.stringify(resJson)}`);
         // need handling failure
       } else {
         setUser(resJson.user);
@@ -61,7 +61,7 @@ const ProfileScreen = ({route, navigation}) => {
     <View style={styles.container}>
       {isLoading
         ? (
-          <Text h2="h2">Loading ...</Text>
+          <Text h2>Loading...</Text>
         ) : (
           <View>
             <ProfileHeader user={user}/>

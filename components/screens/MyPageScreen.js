@@ -1,9 +1,8 @@
 import React, { useState, useEffect, useContext, useRef } from 'react';
-
 import { StyleSheet, View, FlatList } from 'react-native';
-
 import { Text, Header } from 'react-native-elements';
 import { useScrollToTop } from '@react-navigation/native';
+
 import AuthContext from '../../AuthContext';
 import ProfileHeader from '../ProfileHeader';
 import TouchablePainting from '../TouchablePainting';

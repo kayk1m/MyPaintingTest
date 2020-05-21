@@ -1,12 +1,9 @@
 import React, { useState, useContext } from 'react';
-
 import { StyleSheet, View } from 'react-native';
-
 import { Text, Button, Input } from 'react-native-elements';
+import { sha256 } from 'react-native-sha256';
 
 import AuthContext from '../../AuthContext';
-
-import { sha256 } from 'react-native-sha256';
 
 const SignInScreen = ({ navigation }) => {
   const [email, setEmail] = useState('');
@@ -55,8 +52,7 @@ const styles = StyleSheet.create({
     backgroundColor: 'lavender',
   },
   spacing: {
-    margin: 10,
-    flex: 1,
+    height: 20,
   }
 });
 

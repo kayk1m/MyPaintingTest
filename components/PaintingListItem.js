@@ -13,7 +13,7 @@ import { SCREEN_WIDTH, SERVER_URL, STORAGE_URL } from './defines';
 import AuthContext from '../AuthContext';
 const iconSize = 20;
 
-const PaintingItem = ({ item }) => {
+const PaintingListItem = ({ item }) => {
   const [userName, setUserName] = useState(null);
   const navigation = useNavigation();
 
@@ -120,4 +120,4 @@ const styles = StyleSheet.create({
   }
 });
 
-export default PaintingItem;
+export default PaintingListItem;

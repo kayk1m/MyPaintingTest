@@ -1,14 +1,10 @@
 import React, { useState, useContext } from 'react';
-
 import { View, StyleSheet } from 'react-native';
-
 import { Text, Input, Button } from 'react-native-elements';
-
 import { Picker } from '@react-native-community/picker';
+import { sha256 } from 'react-native-sha256';
 
 import AuthContext from '../../AuthContext';
-
-import { sha256 } from 'react-native-sha256';
 
 const SignUpScreen = ({ navigation }) => {
   const [username, setUsername] = useState('');

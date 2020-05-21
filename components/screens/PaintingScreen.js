@@ -1,7 +1,5 @@
 import React, { useState, useEffect, useContext, useRef } from 'react';
-
 import { StyleSheet, View, FlatList } from 'react-native';
-
 import { useScrollToTop } from '@react-navigation/native';
 
 import PaintingListItem from '../PaintingListItem';
