@@ -30,17 +30,30 @@ const FanItem = ({ numFans }) => {
   );
 };
 
-const ProfileHeader = ({ user }) => {
+const ProfileHeader = ({ user, upload, handleUpload }) => {
   return (
     <View>
       <View style={{ flexDirection: 'row', padding: 20 }}>
-        <Avatar
-          rounded
-          activeOpacity={0.8}
-          size='xlarge'
-          source={{ uri: `${STORAGE_URL}/profile/${user.profile_pic_src}` }}
-          onPress={() => console.log(`NEED WORK!!!!`)}
-        />
+        {upload
+          ? (
+            <Avatar
+              rounded
+              activeOpacity={0.8}
+              size='xlarge'
+              source={{ uri: `${STORAGE_URL}/profile/${user.profile_pic_src}` }}
+              onPress={() => handleUpload()}
+              showAccessory
+            />
+          ) : (
+            <Avatar
+              rounded
+              activeOpacity={1}
+              size='xlarge'
+              source={{ uri: `${STORAGE_URL}/profile/${user.profile_pic_src}` }}
+            />
+          )
+        }
+
         <FanItem numFans={user.num_fans} />
       </View>
       <Text style={{ paddingLeft: 15, paddingBottom: 15 }}>{user.profile_msg}</Text>

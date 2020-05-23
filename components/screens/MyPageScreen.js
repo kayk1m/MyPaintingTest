@@ -57,10 +57,14 @@ const MyPageScreen = ({ navigation }) => {
   const handleRefresh = () => {
     console.log(`refreshing...`);
     fetchData();
-  }
+  };
 
   const ref = useRef(null);
   useScrollToTop(ref);
+
+  const handleUpload = () => {
+    console.log(`HANDLE UPLOAD CALLLED!`);
+  };
 
   return (
     <View style={styles.container}>
@@ -69,7 +73,11 @@ const MyPageScreen = ({ navigation }) => {
           <Text h2>Loading...</Text>
         ) : (
           <View>
-            <ProfileHeader user={user} />
+            <ProfileHeader
+              user={user}
+              upload={true}
+              handleUpload={handleUpload}
+            />
             <FlatList
               ref={ref}
               data={paintings}
